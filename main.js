@@ -2,8 +2,9 @@
 var CONFIG={
   email:"",            /* shown on the contact page */
   privacyEmail:"",     /* where people send privacy requests and complaints; falls back to email */
-  phone:"",            /* shown on the contact page */
-  city:"Pune, India",
+  phone:"+91 88055 55599", /* shown on the contact page */
+  city:"Office No 10, 11th Floor, The Platinum Tower, Old Mundhwa Road, Tukaram Nagar, Kharadi, Pune, Maharashtra 411014",
+  hours:"Open until 5 pm",
   formEndpoint:""      /* a form-collection URL (for example from Formspree) that receives enquiries */
 };
 /* REVIEWS: replace with real, permissioned feedback and set demo to false. */
@@ -124,7 +125,7 @@ var DEADLINES=[
   if(cl){var sel=function(el){try{var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r)}catch(e){}};
     var line=function(label,val,copy){if(!val)return;var li=document.createElement('li'),s=document.createElement('small');s.textContent=label;var v=document.createElement('span');v.textContent=val;li.appendChild(s);li.appendChild(v);
       if(copy){var b=document.createElement('button');b.type='button';b.className='cbtn';b.textContent='Copy';b.addEventListener('click',function(){var ok=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1600)};try{navigator.clipboard.writeText(val).then(ok,function(){sel(v)})}catch(e){sel(v)}});li.appendChild(b)}cl.appendChild(li)};
-    line('EMAIL',CONFIG.email,true);line('PHONE',CONFIG.phone,true);line('OFFICE',CONFIG.city,false);line('COORDINATES','18.52° N, 73.86° E',false);line('REPLY TIME','Within two working days',false)}
+    line('EMAIL',CONFIG.email,true);line('PHONE',CONFIG.phone,true);line('OFFICE',CONFIG.city,false);line('HOURS',CONFIG.hours,false);line('COORDINATES','18.52° N, 73.86° E',false);line('REPLY TIME','Within two working days',false)}
   var form=$('#form');
   if(form){var status=$('#status'),fi=$('#f-int');
     try{var m=/[?&]svc=([a-z]+)/.exec(location.search);if(m&&fi.querySelector('option[value="'+m[1]+'"]'))fi.value=m[1]}catch(e){}
