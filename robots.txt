@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://globparth.github.io/glob_website/sitemap.xml
