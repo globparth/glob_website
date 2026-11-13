@@ -1,3 +1,6 @@
+@font-face{font-family:'Funnel Display';src:url(fonts/funnel-display-latin-wght-normal.woff2) format('woff2');font-weight:300 800;font-style:normal;font-display:swap}
+@font-face{font-family:'Geist';src:url(fonts/geist-latin-wght-normal.woff2) format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:'Geist Mono';src:url(fonts/geist-mono-latin-wght-normal.woff2) format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
 /* Globriddge Technologies. Concept: a bright, quiet page with one dark window onto the Earth. White ground, near-black type, one emerald, and a lime highlighter used like a marker pen. */
 :root{
   --bg:#FFFFFF; --soft:#F3F6F2; --soft2:#E9EFE8; --ink:#0B1410; --muted:#56665D; --line:#DFE7E0;
@@ -17,7 +20,7 @@ button{font:inherit;color:inherit}
 [hidden]{display:none!important}
 ::selection{background:var(--hi);color:var(--ink)}
 :focus-visible{outline:2.5px solid var(--acc);outline-offset:3px;border-radius:8px}
-.wrap{max-width:1880px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px),3vw);padding-right:max(16px,env(safe-area-inset-right,0px),3vw)}
+.wrap{max-width:1680px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px),3vw);padding-right:max(16px,env(safe-area-inset-right,0px),3vw)}
 .sec{padding-block:120px}
 .sec.soft{background:var(--soft)}
 .h2{font-size:clamp(34px,5vw,68px)}
@@ -326,6 +329,63 @@ footer{background:var(--dark);color:var(--dark-muted);padding-block:80px 0;font-
   .fg{grid-template-columns:1fr 1fr}.fg > div:first-child{grid-column:1/-1}
   .scard{position:relative;top:auto}
   .gl-tag.t2{top:2%}.gl-tag.t1{bottom:2%}.gl-tag.t3{display:none}
+}
+
+/* consent + privacy notice */
+.agree{grid-column:1/-1;display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start}
+.agree input{width:24px;height:24px;padding:0;margin:2px 0 0;border:1.5px solid var(--ink);border-radius:6px;accent-color:var(--acc);cursor:pointer}
+.agree label{font:400 16px/1.5 var(--body);color:var(--ink);cursor:pointer}
+.agree a,.note a,.prose a{color:var(--acc-d);text-underline-offset:3px}
+.agree .err{grid-column:2}
+.note{grid-column:1/-1;font-size:14px;color:var(--muted);line-height:1.55}
+.prose{max-width:76ch;display:grid;gap:56px}
+.prose h2{font-size:clamp(26px,3vw,38px);margin-bottom:16px}
+.prose p,.prose li{font-size:18px;color:var(--muted);line-height:1.65}
+.prose p + p{margin-top:12px}
+.prose ul{margin:0;padding-left:22px;display:grid;gap:8px}
+.prose strong{color:var(--ink);font-weight:600}
+.ptab{border-top:1.5px solid var(--ink);margin-top:8px}
+.ptab > div{display:grid;grid-template-columns:.6fr 1fr 1fr;gap:24px;padding:18px 0;border-bottom:1px solid var(--line);font-size:16px}
+.ptab > div:first-child{font:500 12px/1 var(--mono);color:var(--muted)}
+.ptab b{font-weight:600}
+.legal a{text-decoration:underline;text-underline-offset:3px}
+
+/* phone tuning */
+@media (max-width:780px){
+  body{font-size:16px}
+  .nav{top:calc(10px + env(safe-area-inset-top,0px))}
+  .nav .pill{height:58px;padding:0 8px 0 16px}
+  .logo img{height:36px}
+  .hero h1{font-size:clamp(40px,12.4vw,64px);line-height:1}
+  .phero h1{font-size:clamp(36px,10.5vw,56px)}
+  .h2{font-size:clamp(30px,8.6vw,44px)}
+  .lede,.phero .lede{font-size:17px}
+  .head{margin-bottom:40px;gap:16px}
+  .hero-row{gap:26px;margin-top:26px}
+  .hero-row .cta{width:100%}.hero-row .cta .btn{flex:1;justify-content:space-between}.hero-row .cta .btn.alt{justify-content:center}
+  .btn{white-space:nowrap}.hero-row .cta{gap:8px}.hero-row .cta .btn{padding-left:18px;font-size:15px}.hero-row .cta .btn.alt{padding:16px 14px}
+  .stage{margin-top:34px}.stage-info{padding:26px 22px 0;gap:20px}
+  .stage-info .base{font-size:30px;max-width:none}
+  .globe-box{max-width:420px}
+  .tick{padding-top:36px}.tick span{font-size:44px;gap:24px}.tick .tr{gap:24px}
+  .row{padding:26px 4px;gap:14px}.row:hover{padding-inline:14px}.row h3{font-size:28px}.row p{font-size:16px}
+  .bar{padding:26px 0}.bar b{font-size:64px}.bar p{font-size:17px}
+  .scard{padding:28px 24px;min-height:0;border-radius:24px}.scard .n{font-size:64px}.scard h3{font-size:34px}.scard p{font-size:17px}
+  .stack{gap:16px}
+  .q{padding:26px}.q blockquote{font-size:20px}
+  .cpanel h2{font-size:clamp(40px,12vw,60px)}.cpanel p{font-size:17px}
+  .blocks{gap:60px}.check li{font-size:17px;padding:16px 0}
+  .side{padding:24px}.side ul{display:none}
+  .case{padding:26px 22px}.case h3{font-size:24px;padding-right:0;margin-top:34px}
+  .lvout{gap:22px;margin-top:28px;padding-top:26px}
+  .tool{padding:12px 16px;font-size:15px}.fb{padding:10px 14px;font-size:14px}
+  summary{font-size:19px}details p{font-size:16px}
+  input,select,textarea{font-size:17px}
+  .info{padding:26px}
+  footer{padding-top:56px}.mark{margin-top:36px}
+  .ptab > div{grid-template-columns:1fr;gap:6px}.ptab > div:first-child{display:none}
+  .prose{gap:40px}.prose p,.prose li{font-size:16px}
+  .btn{min-height:48px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}

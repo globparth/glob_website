@@ -1,6 +1,7 @@
 /* SETTINGS: fill these in before hosting. */
 var CONFIG={
   email:"",            /* shown on the contact page */
+  privacyEmail:"",     /* where people send privacy requests and complaints; falls back to email */
   phone:"",            /* shown on the contact page */
   city:"Pune, India",
   formEndpoint:""      /* a form-collection URL (for example from Formspree) that receives enquiries */
@@ -133,12 +134,17 @@ var DEADLINES=[
       err('e-name',name?'':'Enter your name.');if(!name)ok=false;
       var good=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail);err('e-mail',good?'':'Enter a valid work email, like name@company.com.');if(!good)ok=false;
       err('e-msg',msg?'':'Describe the problem in a sentence or two.');if(!msg)ok=false;
+      var agreed=$('#f-ok').checked;err('e-ok',agreed?'':'Tick the box to let us use these details to reply.');if(!agreed)ok=false;
+      f.set('consent','yes');f.set('consent_time',new Date().toISOString());f.set('consent_text',$('label[for="f-ok"]').textContent.trim());
       if(!ok){status.textContent='';return}
       var text='Name: '+name+'\nCompany: '+(f.get('company')||'')+'\nEmail: '+mail+'\nPhone: '+(f.get('phone')||'')+'\nInterest: '+fi.options[fi.selectedIndex].text+'\n\n'+msg;
       if(CONFIG.formEndpoint){status.textContent='Sending...';
         fetch(CONFIG.formEndpoint,{method:'POST',body:f,headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw 0;status.innerHTML='';var p=document.createElement('p');p.className='ok';p.textContent='Enquiry sent. We reply within two working days.';status.appendChild(p);form.reset()}).catch(function(){status.textContent='The enquiry did not send. Check your connection and try again.'});return}
       status.innerHTML='';var p=document.createElement('p');p.textContent=CONFIG.email?'Copy this message and email it to '+CONFIG.email+'.':'Preview mode: this form is not connected yet. Add a form address in main.js to receive enquiries.';
       var ta=document.createElement('textarea');ta.readOnly=true;ta.value=text;ta.setAttribute('aria-label','Your enquiry text');status.appendChild(p);status.appendChild(ta)})}
+
+  /* privacy contact on the notice page */
+  var pe=CONFIG.privacyEmail||CONFIG.email;$$('.cfg-pmail').forEach(function(e){e.textContent=pe||'[privacy contact email to be added]'});
 
   watch(document);
 
@@ -155,12 +161,12 @@ var DEADLINES=[
   var cv=$('#globe'),ctx=cv&&cv.getContext&&cv.getContext('2d');
   if(ctx){
     var LAND="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAfAP8HAAAAAAAAAAAAAAAAAAAAAADo//z//wcAAAAAAAACAAAAAAAAAAAAhvvw//8PAPABAAAAwAMAAAAAAAAAwADkw////wEABAAAAABgAAAAAAAAAADAUT8A/v8PAAAAAAwA/j8AuAEAAAAAcBHtDcD/fwAAAAAwAPz/fwMAABCAAQD5w/wD8P8FAAAcAIL7//9//xOAAP/ff0668QD/HwAA+A8At///////v3/w/////x8++B8AAOD/1//7////////jP////+/+AE/gAcAn9f//////////w/w/////wEs4AEAAHz+////////////gL////8HeAAcAADg5///////////9ADgAf7/f4AnAAAAAH78////////H0QAAAiA//8f8AcAAIBB4////////38ADwAQAOD//5//AQAAHAT/////////A3AAAAAA/v//+T8AAGDz//////////8DAQAAAMD/////AwAAsP//////////LwAAAAAA6P///2IAAAD+//////////8CAAAAAAD///8/CAAA4P//////////JwAAAAAA8P///wYAAAD+/unz/////z8AAAAAAAD///8HAAAA/pgPPP//////MQAAAAAA8P//PwAAAMBD9v7n/////wcBAAAAAAD///8AAAAAPkD7f/7///8hEAAAAAAA4P//DwAAAIDhAv/n////f8YAAAAAAAD8//8AAAAA+AdE//////8jDwAAAAAAgP//AwAAAMD/APD/////PxgAAAAAAADw/x8AAAAA/n/v//////8HAAAAAAAAAPwDAgAAAOD////7////fwAAAAAAAACgHyAAAACA//9/f/7///8DAAAAAAAAAPQBAAAAAPj//+cv+P//PwAAAAAAAAAAHjAAAADA/////g/+//8EAAAAAAAAAOBhCAAAAP7//99/4D//AAAAAAAAAAAAPAMEAADA////+Qf84BcAAAAAAAAAAAA/AAAAAPz//58fgAf+QAAAAAAAAAAAAA8AAADg////ewA4gA8EAAAAAAAAAADAAAAAAPz//38BgAP4QQAAAAAAAAAAAAgPAADA////zwAwgAwQAAAAAAAAAAAA9Q8AAPj///8HAAVIAAAAAAAAAAAAAID/AQAA////fwBAAAAQAAAAAAAAAAAA+P8AAGDh//8DAAA0GAAAAAAAAAAAAID/HwAAAPj/HwAAgMIBAAAAAAAAAAAA/P8BAACA//8AAAAYXgAAAAAAAAAAAMD/fwAAAPz/BwAAAOOBAQAAAAAAAAAA/P8/AACA/z8AAABgbtQBAAAAAAAAAOD//w8AAPD/AwAAAAQIeAAAAAAAAAAA/P//AQAA/z8AAACAA4APAQAAAAAAAID//w8AAPD/AwAAAAARsEAAAAAAAAAA+P9/AAAA/j8AAAAAAAAAAAAAAAAAAAD//wcAAPD/QwAAAACAIwAAAAAAAAAA8P9/AAAA/z8EAAAAAD8GIAAAAAAAAAD8/wMAAPD/cQAAAAD4ZwAAAAAAAAAAgP8/AAAA/w8HAAAAgP8HAAAAAAAAAAD4/wMAAOD/MAAAAAD//wEBAAAAAAAAgP8PAAAA/g8DAAAA+P8fAAAAAAAAAAD4PwAAAOB/EAAAAID//wMAAAAAAAAAgP8DAAAA/AMAAAAA+P9/AAAAAAAAAAD8HwAAAMA/AAAAAID//wcAAAAAAAAAwP8BAAAA+AEAAAAA8P9/AAAAAAAAAAD8DwAAAIAPAAAAAAAP/gMAAAAAAAAAwB8AAAAAAAAAAAAAEIAfAAEAAAAAAAD+AwAAAAAAAAAAAAAA8AEgAAAAAAAA4AcAAAAAAAAAAAAAAAAAAAYAAAAAAABeAAAAAAAAAAAAAAAAwAAwAAAAAAAAwAMAAAAAAAAAAAAAAAAIgAEAAAAAAAAeAAAAAAAAAAAAAAAAAAAMAAAAAAAA4AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAAAAAAAAAAABAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAB4AEDwn/8HAAAAAAAAAAAwAAAAAACA/P/h/////w8AAAAAAAAAwAcAAAD4////z///////PwAAAAAAHALwAACA//////////////8HAADw/y///wMAAP7/////////////HwAA+P///38AAID///////////////8AAPL/////BwAO////////////////DwAA8P////8HEPD//////////////z8AAOD/////////////////////////H/AfwP//////////////////////////////////////////////////////////////////////////////////////";
-    var S=0,dpr=Math.min(2,devicePixelRatio||1),t=2,run=true,mxr=0,myr=0,tmx=0,tmy=0,ua=0,uv=0,drag=false,lx=0;
+    var S=0,dpr=Math.min(innerWidth<780?1.5:2,devicePixelRatio||1),t=2,run=true,mxr=0,myr=0,tmx=0,tmy=0,ua=0,uv=0,drag=false,lx=0;
     var R=function(d){return d*Math.PI/180};
     var vec=function(lat,lon){var a=R(lat),b=R(lon);return [Math.cos(a)*Math.sin(b),Math.sin(a),Math.cos(a)*Math.cos(b)]};
     var bits=atob(LAND),MW=180,MH=90;
     var isLand=function(lat,lon){var x=Math.floor(((lon+180)%360+360)%360/2)%MW,y=Math.min(MH-1,Math.max(0,Math.floor((90-lat)/2))),i=y*MW+x;return (bits.charCodeAt(i>>3)>>(i&7))&1};
-    var landPts=[],seaPts=[],N=17000;
+    var landPts=[],seaPts=[],N=innerWidth<780?9000:17000;
     for(var i=0;i<N;i++){var y=1-2*(i+.5)/N,r=Math.sqrt(1-y*y),th=i*2.399963,v=[Math.cos(th)*r,y,Math.sin(th)*r];
       if(isLand(Math.asin(y)*180/Math.PI,Math.atan2(v[0],v[2])*180/Math.PI))landPts.push(v);else if(i%8===0)seaPts.push(v)}
     var PUNE=vec(18.52,73.86),CITIES=[[51.5,-0.1],[40.7,-74],[25.2,55.3],[1.35,103.8],[50.1,8.7],[-33.9,151.2],[35.7,139.7]].map(function(c){return vec(c[0],c[1])});
