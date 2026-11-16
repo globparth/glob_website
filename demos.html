@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Demo Lab: Five Working Service Demos | Globriddge</title>
+<meta name="description" content="Try five working demos from Globriddge: a data dashboard, invoice automation, an order tracker, a document assistant and a data-protection readiness check.">
+<link rel="canonical" href="https://globparth.github.io/glob_website/demos.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:'Funnel Display';src:url(fonts/funnel-display-latin-wght-normal.woff2) format('woff2');font-weight:300 800;font-display:swap}
+@font-face{font-family:'Geist';src:url(fonts/geist-latin-wght-normal.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Geist Mono';src:url(fonts/geist-mono-latin-wght-normal.woff2) format('woff2');font-weight:100 900;font-display:swap}
+/* Layout: one working bench. A tab rail picks the service; each demo is a real, clickable tool on sample data. Single light look, same emerald and lime as the Globriddge site. */
+:root{--bg:#FFFFFF;--soft:#F3F6F2;--soft2:#E9EFE8;--ink:#0B1410;--muted:#56665D;--line:#DFE7E0;--acc:#0A8F5B;--acc-d:#066B43;--hi:#C9F65F;--warn:#B45309;--bad:#B42318;--dark:#06110D;
+--display:'Funnel Display','Helvetica Neue',Arial,sans-serif;--body:'Geist','Helvetica Neue',Arial,sans-serif;--mono:'Geist Mono',ui-monospace,Menlo,Consolas,monospace;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.025em;line-height:1.08;margin:0;text-wrap:balance}
+p{margin:0}button,input,select,textarea{font:inherit;color:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:2.5px solid var(--acc);outline-offset:2px;border-radius:8px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{padding-block:36px 22px}
+.brand{font:500 13px/1 var(--mono);color:var(--acc-d);display:inline-flex;gap:10px;align-items:center;background:var(--soft2);padding:8px 12px;border-radius:999px}
+.brand::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--acc)}
+h1{font-size:clamp(34px,5.4vw,64px);margin:18px 0 12px}
+.hl{background:linear-gradient(var(--hi),var(--hi)) no-repeat 0 78%/100% 42%}
+.sub{color:var(--muted);font-size:18px;max-width:64ch}
+.notice{margin-top:18px;font-size:14px;color:var(--muted);border-left:3px solid var(--hi);padding-left:12px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-block:14px;position:sticky;top:0;background:var(--bg);z-index:5;border-bottom:1px solid var(--line)}
+.tab{flex:none;padding:12px 18px;border-radius:999px;border:1.5px solid var(--ink);background:none;cursor:pointer;font-weight:500;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--ink);color:#fff}
+.panel{padding-block:30px 70px}
+.ph{display:grid;gap:8px;margin-bottom:24px}
+.ph h2{font-size:clamp(26px,3.4vw,40px)}
+.ph p{color:var(--muted);max-width:70ch}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;min-width:0}
+.soft{background:var(--soft);border-color:transparent}
+.lab{font:500 12px/1 var(--mono);color:var(--muted);display:block;margin-bottom:8px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--acc)}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn.ghost{background:none;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn.ghost:hover{background:var(--soft2)}
+.pill{display:inline-block;font:500 12px/1 var(--mono);padding:6px 10px;border-radius:999px;background:var(--soft2);color:var(--acc-d)}
+.pill.w{background:#FEF3C7;color:var(--warn)}.pill.b{background:#FEE4E2;color:var(--bad)}.pill.g{background:var(--hi);color:var(--ink)}
+.grid{display:grid;gap:18px}
+.g4{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g13{grid-template-columns:340px 1fr}
+.kpi b{display:block;font:600 34px/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.kpi span{font-size:14px;color:var(--muted)}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;align-items:end}
+.ctl label{display:grid;gap:6px;font:500 12px/1 var(--mono);color:var(--muted)}
+select,input[type=text],input[type=number],textarea{padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;min-width:0}
+select:focus,input:focus,textarea:focus{outline:0;border-color:var(--acc)}
+svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font:500 12px/1 var(--mono);color:var(--muted)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.inv{display:grid;grid-template-columns:1fr auto;gap:6px 14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}
+.inv b{font-weight:600}.inv small{color:var(--muted);display:block}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.sp{font:500 11px/1 var(--mono);padding:5px 8px;border-radius:6px;background:var(--soft2);color:var(--muted)}
+.sp.on{background:var(--ink);color:var(--hi)}
+.flags{grid-column:1/-1;font-size:14px;color:var(--muted)}
+.kan{display:grid;grid-template-columns:repeat(4,minmax(200px,1fr));gap:14px;overflow-x:auto;padding-bottom:8px}
+.col{background:var(--soft);border-radius:16px;padding:14px;min-height:220px}
+.col h3{font:500 12px/1 var(--mono);color:var(--muted);display:flex;justify-content:space-between;margin-bottom:12px}
+.lead{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;display:grid;gap:6px}
+.lead b{font-weight:600}.lead small{color:var(--muted)}
+.lead div{display:flex;gap:6px}
+.mv{border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:13px}
+.mv:hover{background:var(--hi)}
+.chat{display:grid;gap:12px;max-height:440px;overflow-y:auto;padding-right:4px}
+.msg{padding:14px 16px;border-radius:16px;max-width:92%}
+.msg.u{background:var(--ink);color:#fff;justify-self:end}
+.msg.a{background:var(--soft)}
+.msg .srcs{margin-top:10px;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:14px}
+.chip:hover{background:var(--hi)}
+.ask{display:grid;grid-template-columns:1fr auto;gap:10px}
+.doc{padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}.doc b{display:block}
+.qz{display:grid;gap:0}
+.qrow{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.seg{display:flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:none;padding:8px 14px;cursor:pointer;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.score{font:600 72px/1 var(--display);letter-spacing:-.04em}
+.meter{height:12px;border-radius:999px;background:var(--soft2);overflow:hidden;margin:14px 0}
+.meter i{display:block;height:100%;background:var(--acc);width:0;transition:width .6s}
+.gap{padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}.gap b{display:block}
+footer{border-top:1px solid var(--line);padding-block:24px 40px;color:var(--muted);font-size:14px}
+@media (max-width:900px){.g4{grid-template-columns:1fr 1fr}.g2,.g3,.g13{grid-template-columns:1fr}.qrow{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+<header>
+  <p style="margin-bottom:22px"><a href="index.html" style="display:inline-block"><img src="brand-logo.png" alt="Globriddge International Private Limited" style="height:48px;width:auto;display:block"></a></p>
+  <span class="brand">GLOBRIDDGE · DEMO LAB</span>
+  <h1>Five services, <span class="hl">five working demos.</span></h1>
+  <p class="sub">Each demo is a small, working version of what we build for clients. Click through them the way your team would use the real thing.</p>
+  <p class="notice">All data here is sample data made for the demo. Everything runs in your browser and nothing you type is sent anywhere.</p>
+</header>
+<div class="tabs" role="tablist" aria-label="Demos" id="tabs">
+  <button class="tab" role="tab" aria-selected="true" data-p="p-data">Data services</button>
+  <button class="tab" role="tab" aria-selected="false" data-p="p-auto">Automation</button>
+  <button class="tab" role="tab" aria-selected="false" data-p="p-soft">Custom software</button>
+  <button class="tab" role="tab" aria-selected="false" data-p="p-ai">AI automation</button>
+  <button class="tab" role="tab" aria-selected="false" data-p="p-sec">Cybersecurity</button>
+</div>
+
+<section class="panel" id="p-data" role="tabpanel">
+  <div class="ph"><h2>Sales and operations dashboard</h2><p>We connect scattered sheets and systems into one view. Filter the sample year below by region and product line.</p></div>
+  <div class="ctl"><label>REGION<select id="d-reg"><option value="all">All regions</option><option>West</option><option>North</option><option>South</option><option>Export</option></select></label>
+  <label>PRODUCT LINE<select id="d-prod"><option value="all">All lines</option><option>Grains</option><option>Pulses</option><option>Spices</option></select></label></div>
+  <div class="grid g4" id="d-kpi"></div>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card"><span class="lab">REVENUE BY MONTH (₹ LAKH)</span><svg id="d-bar" viewBox="0 0 560 260" width="100%" role="img" aria-label="Revenue by month"></svg></div>
+    <div class="card"><span class="lab">ON-TIME DELIVERY BY REGION</span><svg id="d-hbar" viewBox="0 0 560 260" width="100%" role="img" aria-label="On-time delivery by region"></svg></div>
+  </div>
+  <div class="card" style="margin-top:18px"><span class="lab">TOP CUSTOMERS IN THIS VIEW</span><div class="tw"><table id="d-tab"></table></div></div>
+</section>
+
+<section class="panel" id="p-auto" role="tabpanel" hidden>
+  <div class="ph"><h2>Invoice processing with approvals</h2><p>Incoming invoices are read, checked against purchase orders and tax rules, then routed. Small clean invoices pass automatically. Anything unusual goes to a person.</p></div>
+  <div class="ctl"><button class="btn" id="a-run">Run automation</button><button class="btn ghost" id="a-reset">Reset</button><label>AUTO-APPROVE LIMIT (₹)<input type="number" id="a-lim" value="50000" step="5000" min="0"></label></div>
+  <div class="grid g13">
+    <div class="grid" style="align-content:start">
+      <div class="card soft kpi"><b id="a-done">0 / 6</b><span>invoices processed</span></div>
+      <div class="card soft kpi"><b id="a-auto">0</b><span>approved without a person</span></div>
+      <div class="card soft kpi"><b id="a-min">0 min</b><span>manual work avoided, at 8 minutes per invoice</span></div>
+    </div>
+    <div class="card" id="a-list"></div>
+  </div>
+</section>
+
+<section class="panel" id="p-soft" role="tabpanel" hidden>
+  <div class="ph"><h2>Order pipeline tracker</h2><p>A simple example of custom software: an order board built around one team’s process. Add an order and move it through the stages.</p></div>
+  <div class="ctl"><label>CUSTOMER<input type="text" id="s-name" placeholder="Customer name"></label><label>VALUE (₹)<input type="number" id="s-val" placeholder="250000" min="0"></label><button class="btn" id="s-add">Add order</button><span class="pill" id="s-total"></span></div>
+  <div class="kan" id="s-kan"></div>
+</section>
+
+<section class="panel" id="p-ai" role="tabpanel" hidden>
+  <div class="ph"><h2>Assistant that answers from your documents</h2><p>Ask a question about the three sample company documents. The assistant shows where each answer came from, and hands over to a person when it is not confident.</p></div>
+  <div class="grid g13">
+    <div class="card"><span class="lab">SAMPLE DOCUMENTS</span><div id="ai-docs"></div><p style="font-size:13px;color:var(--muted);margin-top:12px">This demo uses simple text matching so it can run offline. A client system uses a language model with the same source-and-handover rules.</p></div>
+    <div class="card"><div class="chat" id="ai-chat" aria-live="polite"></div><div class="chips" id="ai-chips"></div>
+      <form class="ask" id="ai-form"><input type="text" id="ai-q" placeholder="Ask about refunds, delivery or leave" aria-label="Your question"><button class="btn" type="submit">Ask</button></form></div>
+  </div>
+</section>
+
+<section class="panel" id="p-sec" role="tabpanel" hidden>
+  <div class="ph"><h2>Data-protection readiness check</h2><p>Ten questions based on India’s Digital Personal Data Protection (DPDP) Act and Rules. Answer for your company to see a readiness score and a ranked fix list. This is a first look, not legal advice.</p></div>
+  <div class="grid g2">
+    <div class="card"><div class="qz" id="q-list"></div></div>
+    <div class="grid" style="align-content:start"><div class="card soft"><span class="lab">READINESS SCORE</span><div class="score"><span id="q-score">0</span>%</div><div class="meter"><i id="q-meter"></i></div><p id="q-band" style="color:var(--muted)"></p></div>
+      <div class="card"><span class="lab">FIX FIRST</span><div id="q-gaps"></div></div></div>
+  </div>
+</section>
+<footer>Globriddge Demo Lab. Sample data only. A real engagement starts with a paid diagnostic and a fixed quote. <a href="contact.html">Start a project</a> · <a href="privacy.html">Privacy notice</a></footer>
+</div>
+
+<script>
+(function(){
+var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+var el=function(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+var inr=function(n){return '₹'+Math.round(n).toLocaleString('en-IN')};
+/* tabs */
+$$('.tab').forEach(function(t){t.addEventListener('click',function(){$$('.tab').forEach(function(x){x.setAttribute('aria-selected',x===t)});$$('.panel').forEach(function(p){p.hidden=p.id!==t.getAttribute('data-p')})})});
+
+/* 1. dashboard */
+var seed=7,rnd=function(){seed=(seed*16807)%2147483647;return seed/2147483647};
+var MON=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],REG=['West','North','South','Export'],PRD=['Grains','Pulses','Spices'];
+var CUST=['Shree Traders','Kaveri Foods','Northline Mart','Sahyadri Stores','Blue Harbor Imports','Deccan Agro','Mahal Retail','Coastal Provisions'];
+var rows=[];MON.forEach(function(m,mi){REG.forEach(function(r,ri){PRD.forEach(function(p,pi){var base=[18,12,10,22][ri]*[1.3,1,.7][pi];rows.push({m:mi,r:r,p:p,rev:base*(.75+rnd()*.6)*(1+mi*.02),ord:Math.round(20+rnd()*40),ont:.78+rnd()*.2-(ri===3?.08:0),c:CUST[Math.floor(rnd()*CUST.length)]})})})});
+function dash(){var fr=$('#d-reg').value,fp=$('#d-prod').value,v=rows.filter(function(x){return (fr==='all'||x.r===fr)&&(fp==='all'||x.p===fp)});
+  var rev=v.reduce(function(s,x){return s+x.rev},0),ord=v.reduce(function(s,x){return s+x.ord},0),ont=v.reduce(function(s,x){return s+x.ont*x.ord},0)/ord;
+  var k=$('#d-kpi');k.innerHTML='';[['₹'+rev.toFixed(0)+' L','revenue, sample year'],[ord.toLocaleString('en-IN'),'orders'],['₹'+(rev/ord*100).toFixed(1)+' K','average order value'],[(ont*100).toFixed(1)+'%','delivered on time']].forEach(function(a){var c=el('div','card soft kpi');c.appendChild(el('b','',a[0]));c.appendChild(el('span','',a[1]));k.appendChild(c)});
+  var bm=MON.map(function(_,i){return v.filter(function(x){return x.m===i}).reduce(function(s,x){return s+x.rev},0)}),mx=Math.max.apply(0,bm)||1,s='';
+  bm.forEach(function(b,i){var h=b/mx*190,x=26+i*44;s+='<rect x="'+x+'" y="'+(220-h)+'" width="30" height="'+h+'" rx="5" fill="'+(i===bm.indexOf(mx)?'#0B1410':'#0A8F5B')+'"/><text x="'+(x+15)+'" y="238" text-anchor="middle">'+MON[i]+'</text><text x="'+(x+15)+'" y="'+(214-h)+'" text-anchor="middle">'+b.toFixed(0)+'</text>'});
+  $('#d-bar').innerHTML='<line x1="20" y1="220" x2="548" y2="220" stroke="#DFE7E0"/>'+s;
+  var hs='';REG.forEach(function(r,i){var vv=v.filter(function(x){return x.r===r});if(!vv.length)return;var o=vv.reduce(function(s,x){return s+x.ord},0),t=vv.reduce(function(s,x){return s+x.ont*x.ord},0)/o,y=30+i*56;
+    hs+='<text x="0" y="'+(y+18)+'">'+r+'</text><rect x="70" y="'+y+'" width="420" height="26" rx="13" fill="#E9EFE8"/><rect x="70" y="'+y+'" width="'+(420*t)+'" height="26" rx="13" fill="'+(t<.85?'#B45309':'#0A8F5B')+'"/><text x="500" y="'+(y+18)+'">'+(t*100).toFixed(0)+'%</text>'});
+  $('#d-hbar').innerHTML=hs+'<line x1="'+(70+420*.85)+'" y1="18" x2="'+(70+420*.85)+'" y2="250" stroke="#0B1410" stroke-dasharray="4 4"/><text x="'+(70+420*.85+6)+'" y="254">target 85%</text>';
+  var by={};v.forEach(function(x){by[x.c]=by[x.c]||{rev:0,ord:0};by[x.c].rev+=x.rev;by[x.c].ord+=x.ord});
+  var t=$('#d-tab');t.innerHTML='<tr><th>Customer</th><th class="n">Revenue (₹ lakh)</th><th class="n">Orders</th><th class="n">Share</th></tr>';
+  Object.keys(by).sort(function(a,b){return by[b].rev-by[a].rev}).slice(0,6).forEach(function(c){var tr=el('tr');tr.appendChild(el('td','',c));tr.appendChild(el('td','n',by[c].rev.toFixed(1)));tr.appendChild(el('td','n',by[c].ord));tr.appendChild(el('td','n',(by[c].rev/rev*100).toFixed(1)+'%'));t.appendChild(tr)});
+}
+$('#d-reg').addEventListener('change',dash);$('#d-prod').addEventListener('change',dash);dash();
+
+/* 2. invoices */
+var INV=[{id:'INV-2041',v:'Kaveri Packaging',amt:38400,po:'PO-771',poAmt:38400,gst:true,dup:false},{id:'INV-2042',v:'Deccan Logistics',amt:126500,po:'PO-764',poAmt:126500,gst:true,dup:false},{id:'INV-2043',v:'Sahyadri Print',amt:21900,po:'PO-780',poAmt:19900,gst:true,dup:false},{id:'INV-2044',v:'Blue Harbor Freight',amt:44800,po:'',poAmt:0,gst:true,dup:false},{id:'INV-2045',v:'Kaveri Packaging',amt:38400,po:'PO-771',poAmt:38400,gst:true,dup:true},{id:'INV-2046',v:'Northline Supplies',amt:15750,po:'PO-788',poAmt:15750,gst:false,dup:false}];
+var st=[];function aDraw(){var L=$('#a-list');L.innerHTML='';L.appendChild(el('span','lab','INBOX'));
+  INV.forEach(function(v,i){var s=st[i]||{step:0},r=el('div','inv'),a=el('div');a.appendChild(el('b','',v.id+' · '+v.v));a.appendChild(el('small','',inr(v.amt)+(s.step>0?' · PO '+(v.po||'not found')+' · GST number '+(v.gst?'valid':'missing'):'')));
+    var sp=el('div','steps');['Read','Check','Route'].forEach(function(n,j){sp.appendChild(el('span','sp'+(s.step>j?' on':''),n))});a.appendChild(sp);r.appendChild(a);
+    var b=el('div');if(s.res){b.appendChild(el('span','pill '+(s.res==='Approved'||s.res==='Auto-approved'?'g':s.res==='Rejected'||s.res==='Blocked'?'b':'w'),s.res));
+      if(s.res==='Needs approval'){var ok=el('button','btn sm','Approve');ok.style.marginLeft='8px';ok.onclick=function(){st[i].res='Approved';aDraw()};var no=el('button','btn sm ghost','Reject');no.style.marginLeft='6px';no.onclick=function(){st[i].res='Rejected';aDraw()};b.appendChild(ok);b.appendChild(no)}}
+    r.appendChild(b);if(s.why)r.appendChild(el('div','flags',s.why));L.appendChild(r)});
+  var done=st.filter(function(s){return s&&s.res}).length,auto=st.filter(function(s){return s&&s.res==='Auto-approved'}).length;
+  $('#a-done').textContent=done+' / '+INV.length;$('#a-auto').textContent=auto;$('#a-min').textContent=(auto*8)+' min'}
+function aRun(){st=[];var lim=+$('#a-lim').value||0,i=0;(function next(){if(i>=INV.length)return;var v=INV[i],k=i;st[k]={step:1};aDraw();
+  setTimeout(function(){st[k].step=2;aDraw();setTimeout(function(){var why=[],res;
+    if(v.dup){res='Blocked';why.push('Same vendor, amount and PO as INV-2041: likely duplicate.')}
+    else{if(!v.po)why.push('No purchase order found.');else if(v.amt!==v.poAmt)why.push('Amount differs from PO by '+inr(Math.abs(v.amt-v.poAmt))+'.');if(!v.gst)why.push('GST number missing on invoice.');if(v.amt>lim)why.push('Above the auto-approve limit of '+inr(lim)+'.');res=why.length?'Needs approval':'Auto-approved';if(!why.length)why.push('Matches PO, tax details valid, under the limit.')}
+    st[k]={step:3,res:res,why:why.join(' ')};aDraw();i++;setTimeout(next,250)},350)},350)})()}
+$('#a-run').addEventListener('click',aRun);$('#a-reset').addEventListener('click',function(){st=[];aDraw()});aDraw();
+
+/* 3. kanban */
+var STG=['New order','Confirmed','Dispatched','Paid'],ord=[{n:'Shree Traders',v:420000,s:0},{n:'Mahal Retail',v:185000,s:0},{n:'Deccan Agro',v:760000,s:1},{n:'Coastal Provisions',v:240000,s:2},{n:'Northline Mart',v:310000,s:3}];
+function kDraw(){var K=$('#s-kan');K.innerHTML='';STG.forEach(function(g,gi){var c=el('div','col'),it=ord.filter(function(o){return o.s===gi}),h=el('h3');h.appendChild(el('span','',g.toUpperCase()));h.appendChild(el('span','',inr(it.reduce(function(s,o){return s+o.v},0))));c.appendChild(h);
+  it.forEach(function(o){var d=el('div','lead');d.appendChild(el('b','',o.n));d.appendChild(el('small','',inr(o.v)));var bt=el('div');
+    if(o.s>0){var b=el('button','mv','Back');b.setAttribute('aria-label','Move '+o.n+' back');b.onclick=function(){o.s--;kDraw()};bt.appendChild(b)}
+    if(o.s<3){var f=el('button','mv','Move to '+STG[o.s+1]);f.onclick=function(){o.s++;kDraw()};bt.appendChild(f)}
+    d.appendChild(bt);c.appendChild(d)});K.appendChild(c)});
+  var open=ord.filter(function(o){return o.s<3}).reduce(function(s,o){return s+o.v},0);$('#s-total').textContent='Open pipeline: '+inr(open)}
+$('#s-add').addEventListener('click',function(){var n=$('#s-name').value.trim(),v=+$('#s-val').value;if(!n){$('#s-name').focus();return}ord.push({n:n,v:v>0?v:0,s:0});$('#s-name').value='';$('#s-val').value='';kDraw()});kDraw();
+
+/* 4. assistant */
+var DOCS=[{t:'Refund and returns policy',p:['Customers can return unopened goods within 7 days of delivery for a full refund.','Refunds are paid to the original payment method within 5 working days after the goods are received back.','Damaged goods must be reported with photos within 48 hours of delivery. A replacement or refund is offered.','Refunds above ₹25,000 need approval from the accounts manager.']},
+ {t:'Delivery and shipping terms',p:['Orders inside Maharashtra are delivered within 3 working days. Other states take 5 to 7 working days.','Export shipments are dispatched within 10 working days after documents are complete.','Delivery is free for orders above ₹10,000. Smaller orders carry a ₹350 delivery charge.','Customers receive a tracking link by message when the order is dispatched.']},
+ {t:'Staff leave policy',p:['Each employee has 18 days of paid leave and 8 days of sick leave per year.','Leave of more than 3 days in a row needs approval from the department head at least one week ahead.','Unused paid leave of up to 10 days carries over to the next year.','Office hours are 9:30 am to 5 pm, Monday to Saturday.']}];
+var STOP='the a an of to in is are for and or on at by with from how what when do does can i my we our you it be have has will long much many get need there any per'.split(' ');
+var tok=function(s){return s.toLowerCase().replace(/[^a-z0-9₹ ]/g,' ').split(/\s+/).filter(function(w){return w&&STOP.indexOf(w)<0}).map(function(w){return w.replace(/(ing|ed|es|s)$/,'')})};
+var dd=$('#ai-docs');DOCS.forEach(function(d){var x=el('div','doc');x.appendChild(el('b','',d.t));x.appendChild(el('span','',d.p.length+' paragraphs'));dd.appendChild(x)});
+var chat=$('#ai-chat');function say(c,t,src){var m=el('div','msg '+c,t);if(src){var s=el('div','srcs',src);m.appendChild(s)}chat.appendChild(m);chat.scrollTop=chat.scrollHeight}
+function ask(q){say('u',q);var qt=tok(q),best=null;DOCS.forEach(function(d){d.p.forEach(function(p,i){var pt=tok(p+' '+d.t),sc=0;qt.forEach(function(w){if(pt.indexOf(w)>=0)sc+=1});sc=sc/Math.max(2,qt.length);if(!best||sc>best.sc)best={sc:sc,p:p,d:d.t,i:i+1}})});
+  setTimeout(function(){if(best&&best.sc>=.5)say('a',best.p,'Source: '+best.d+', paragraph '+best.i+' · confidence '+(Math.min(.97,.5+best.sc*.45)*100).toFixed(0)+'%');
+    else say('a','I could not find a confident answer in the documents, so I have passed this question to a person on the team.','Handed over to a person · no source matched well enough')},350)}
+['When are refunds paid?','Is delivery free?','How many days of paid leave do staff get?','Can I pay by cheque?'].forEach(function(c){var b=el('button','chip',c);b.type='button';b.onclick=function(){ask(c)};$('#ai-chips').appendChild(b)});
+$('#ai-form').addEventListener('submit',function(e){e.preventDefault();var q=$('#ai-q').value.trim();if(q){ask(q);$('#ai-q').value=''}});
+say('a','Ask me about refunds, delivery or staff leave. I only answer from the three documents on the left.');
+
+/* 5. DPDP check */
+var QS=[['We know what personal data we hold, where it is kept and why we hold it.','Map your personal data','List every system and sheet holding personal data, with the purpose for each.',3],
+ ['People see a clear notice, in plain language, before we collect their data.','Write a clear notice','Tell people what you collect, why, and how to use their rights, at the point of collection.',3],
+ ['We collect consent with a clear action, such as an unticked box, and keep a record of it.','Record consent','Use unticked boxes or clear buttons, and store who consented, to what, and when.',3],
+ ['People can withdraw consent as easily as they gave it.','Make withdrawal easy','Offer a simple way to withdraw and act on it promptly.',2],
+ ['We can find, correct and delete one person’s data when they ask.','Handle rights requests','Set up a process and an owner for access, correction and erasure requests.',3],
+ ['We have a named contact for privacy questions and complaints, and publish it.','Name a privacy contact','Publish contact details for grievances and reply within your stated time.',2],
+ ['Personal data is protected with access controls, encryption and logs.','Strengthen safeguards','Limit access to those who need it, encrypt data and keep access logs.',3],
+ ['We have a written plan for a data breach, including telling affected people and the Data Protection Board.','Prepare a breach plan','Write and rehearse the steps, including who notifies whom and when.',3],
+ ['Our contracts with vendors who process personal data set out their duties.','Fix vendor contracts','Add data-protection terms to contracts with every processor.',2],
+ ['We delete personal data when it is no longer needed.','Set retention periods','Decide how long each type of data is kept and delete it on schedule.',2]];
+var ans=QS.map(function(){return null}),ql=$('#q-list');
+QS.forEach(function(q,i){var r=el('div','qrow');r.appendChild(el('div','',(i+1)+'. '+q[0]));var sg=el('div','seg');sg.setAttribute('role','group');sg.setAttribute('aria-label','Answer for question '+(i+1));
+  [['Yes',1],['Partly',.5],['No',0]].forEach(function(o){var b=el('button','',o[0]);b.type='button';b.setAttribute('aria-pressed','false');b.onclick=function(){ans[i]=o[1];$$('button',sg).forEach(function(x){x.setAttribute('aria-pressed',x===b)});qDraw()};sg.appendChild(b)});r.appendChild(sg);ql.appendChild(r)});
+function qDraw(){var tot=0,got=0,n=0;QS.forEach(function(q,i){tot+=q[3];if(ans[i]!=null){got+=q[3]*ans[i];n++}});var sc=Math.round(got/tot*100);$('#q-score').textContent=sc;$('#q-meter').style.width=sc+'%';
+  $('#q-band').textContent=n<QS.length?'Answered '+n+' of '+QS.length+'. Unanswered questions count as zero.':sc>=80?'Strong position. Close the remaining gaps and keep evidence current.':sc>=50?'Partly ready. The fix list shows where to start.':'Early stage. Start with the first three fixes.';
+  var g=$('#q-gaps');g.innerHTML='';var gaps=QS.map(function(q,i){return {q:q,a:ans[i]}}).filter(function(x){return x.a!=null&&x.a<1}).sort(function(a,b){return b.q[3]*(1-b.a)-a.q[3]*(1-a.a)});
+  if(!gaps.length){g.appendChild(el('p','',n?'No gaps in the answers so far.':'Answer the questions to see your fix list.'));g.firstChild.style.color='var(--muted)';return}
+  gaps.slice(0,5).forEach(function(x){var d=el('div','gap');d.appendChild(el('b','',x.q[1]+(x.q[3]===3?' · high priority':'')));d.appendChild(el('span','',x.q[2]));g.appendChild(d)})}
+qDraw();
+})();
+</script>
+
+</body>
+</html>
