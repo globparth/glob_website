@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pipeline Monitor | Globriddge</title>
-<meta name="description" content="Check every data file before it reaches the next system. Upload a file, validate it against your rules, fix failures and keep a full audit trail.">
+<title>Pipeline Studio | Globriddge</title>
+<meta name="description" content="A browser ETL tool: extract data from files or web addresses, transform it step by step, check it, load it onward and monitor every run.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
@@ -20,7 +20,7 @@ h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.02em;line-h
 p{margin:0}button,input,select,textarea{font:inherit;color:inherit}
 [hidden]{display:none!important}
 :focus-visible{outline:2.5px solid var(--acc);outline-offset:2px;border-radius:8px}
-.app{display:grid;grid-template-columns:250px 1fr;min-height:100%}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100%}
 aside{background:var(--dark);color:#EAF5EE;padding:22px 16px;display:flex;flex-direction:column;gap:22px;position:sticky;top:0;height:100vh}
 .brand{font:600 19px/1.1 var(--display);display:flex;align-items:center;gap:10px}
 .brand i{width:30px;height:30px;border-radius:9px;background:var(--hi);display:grid;place-items:center;flex:none}
@@ -31,39 +31,44 @@ nav button:hover{background:rgba(255,255,255,.07);color:#fff}
 nav button[aria-current="page"]{background:var(--hi);color:var(--ink)}
 nav .cnt{font:500 11px/1 var(--mono);background:var(--bad);color:#fff;padding:4px 7px;border-radius:99px}
 aside .who{margin-top:auto;display:grid;gap:8px;font-size:13px;color:#9DB5A8}
-aside select,aside input[type=text]{background:#0E1F18;border:1px solid #1F3A2E;color:#fff;border-radius:8px;padding:8px 10px;width:100%}aside input[type=text]::placeholder{color:#6F877B}
+aside select,aside input[type=text]{background:#0E1F18;border:1px solid #1F3A2E;color:#fff;border-radius:8px;padding:8px 10px;width:100%}
+aside input[type=text]::placeholder{color:#6F877B}
 main{padding:28px clamp(16px,3vw,40px) 60px;min-width:0}
 .top{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
 .top h1{font-size:clamp(26px,3vw,38px)}
 .top p{color:var(--muted);max-width:70ch;margin-top:6px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;min-width:0}
-.grid{display:grid;gap:16px}.g4{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1fr 1fr}.g31{grid-template-columns:1.5fr 1fr}
-.kpi b{display:block;font:600 34px/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.grid{display:grid;gap:16px}.g4{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1fr 1fr}.g31{grid-template-columns:1.4fr 1fr}
+.kpi b{display:block;font:600 32px/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .kpi span{color:var(--muted);font-size:13px}
 .lab{font:500 11px/1 var(--mono);color:var(--muted);display:block;margin-bottom:10px;letter-spacing:.03em}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-weight:600;cursor:pointer;text-decoration:none;font-size:14px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-weight:600;cursor:pointer;text-decoration:none;font-size:14px;white-space:nowrap}
 .btn:hover{background:var(--acc)}
 .btn.g{background:none;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}.btn.g:hover{background:var(--soft2)}
 .btn.h{background:var(--hi);color:var(--ink)}.btn.h:hover{background:#b9ea45}
 .btn.d{background:none;color:var(--bad);box-shadow:inset 0 0 0 1.5px var(--bad)}
+.btn.s{padding:6px 11px;font-size:13px}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .pill{display:inline-block;font:500 11px/1 var(--mono);padding:6px 9px;border-radius:99px;background:var(--soft2);color:var(--acc-d);white-space:nowrap}
 .pill.ok{background:var(--hi);color:var(--ink)}.pill.w{background:var(--warnbg);color:var(--warn)}.pill.b{background:var(--badbg);color:var(--bad)}.pill.n{background:var(--soft2);color:var(--muted)}
 .tw{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
 th{font:500 11px/1 var(--mono);color:var(--muted);white-space:nowrap}
+table.data td,table.data th{white-space:nowrap;max-width:240px;overflow:hidden;text-overflow:ellipsis;font-size:13px;padding:7px 10px}
 tr.click{cursor:pointer}tr.click:hover{background:var(--bg)}
-input[type=text],input[type=number],select,textarea{padding:9px 11px;border:1.5px solid var(--line);border-radius:10px;background:#fff;width:100%}
+input[type=text],input[type=number],input[type=url],select,textarea{padding:9px 11px;border:1.5px solid var(--line);border-radius:10px;background:#fff;width:100%}
 input:focus,select:focus,textarea:focus{outline:0;border-color:var(--acc)}
+textarea{min-height:120px;font:13px/1.5 var(--mono);resize:vertical}
 label.f{display:grid;gap:6px;font:500 11px/1 var(--mono);color:var(--muted)}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.stages{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.stg{border-radius:14px;padding:14px;background:var(--card);border:1px solid var(--line)}
-.stg b{display:block;font:600 16px/1.1 var(--display)}
-.stg span{font-size:12px;color:var(--muted)}
-.stg.done{background:var(--ink);color:#fff;border-color:var(--ink)}.stg.done span{color:var(--hi)}
-.stg.bad{background:var(--badbg);border-color:var(--badbg)}.stg.warn{background:var(--warnbg);border-color:var(--warnbg)}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.tab{border-radius:14px;padding:13px 14px;background:var(--card);border:1.5px solid var(--line);text-align:left;cursor:pointer}
+.tab b{display:block;font:600 16px/1.1 var(--display)}
+.tab span{font-size:12px;color:var(--muted)}
+.tab[aria-selected="true"]{border-color:var(--ink);box-shadow:0 0 0 1.5px var(--ink)}
+.tab.done{background:var(--ink);color:#fff;border-color:var(--ink)}.tab.done span{color:var(--hi)}
+.tab.bad{background:var(--badbg);border-color:var(--badbg)}.tab.warn{background:var(--warnbg);border-color:var(--warnbg)}
 .issue{padding:14px 0;border-bottom:1px solid var(--line);display:grid;gap:6px}
 .issue:last-child{border-bottom:0}
 .issue .fix{font-size:13px;color:var(--muted);border-left:3px solid var(--hi);padding-left:10px}
@@ -71,20 +76,27 @@ label.f{display:grid;gap:6px;font:500 11px/1 var(--mono);color:var(--muted)}
 .chk{display:flex;flex-wrap:wrap;gap:6px}
 .chk label{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:6px 10px;border:1px solid var(--line);border-radius:99px;cursor:pointer;background:#fff}
 .chk input{accent-color:var(--acc)}
-.drop{border:2px dashed var(--line);border-radius:14px;padding:22px;text-align:center;color:var(--muted);background:var(--bg)}
+.drop{border:2px dashed var(--line);border-radius:14px;padding:20px;text-align:center;color:var(--muted);background:var(--bg)}
 .drop.over{border-color:var(--acc);background:#fff}
 .note{font-size:13px;color:var(--muted)}
 .empty{text-align:center;padding:50px 20px;color:var(--muted)}
 .empty h2{color:var(--ink);font-size:26px;margin-bottom:8px}
-.toast{position:fixed;right:20px;bottom:20px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;z-index:50;max-width:340px}
+.toast{position:fixed;right:20px;bottom:20px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;z-index:50;max-width:360px}
 pre.msg{white-space:pre-wrap;font:13px/1.5 var(--mono);background:var(--bg);border-radius:12px;padding:14px;margin:10px 0}
-@media (max-width:980px){.app{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center}aside .who{margin:0;grid-auto-flow:column}nav{grid-auto-flow:column;overflow-x:auto}.g4{grid-template-columns:1fr 1fr}.g2,.g31,.form{grid-template-columns:1fr}.stages{grid-template-columns:1fr 1fr}}
+.step{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.step .n{width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--hi);display:grid;place-items:center;font:600 12px/1 var(--mono)}
+.step small{display:block;color:var(--muted);font-size:12px}
+.step.err .n{background:var(--bad);color:#fff}
+.runbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 18px;margin-bottom:16px}
+.runbar .sp{flex:1}
+svg text{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+@media (max-width:980px){.app{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center}aside .who{margin:0;grid-auto-flow:column}nav{grid-auto-flow:column;overflow-x:auto}.g4{grid-template-columns:1fr 1fr}.g2,.g31,.form{grid-template-columns:1fr}.tabs{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside>
-  <div class="brand"><i><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#0B1410" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-7 4 4 5-8 4 11"/></svg></i><div>Pipeline Monitor<small>BY GLOBRIDDGE</small></div></div>
+  <div class="brand"><i><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#0B1410" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-7 4 4 5-8 4 11"/></svg></i><div>Pipeline Studio<small>ETL BY GLOBRIDDGE</small></div></div>
   <nav id="nav" aria-label="Sections"></nav>
   <div class="who"><label for="u-name">Your name</label><input id="u-name" type="text" placeholder="Name for the audit log"><label for="u-role">Role (demo)</label><select id="u-role"><option>Admin</option><option>Operator</option><option>Viewer</option></select></div>
 </aside>
@@ -95,17 +107,17 @@ pre.msg{white-space:pre-wrap;font:13px/1.5 var(--mono);background:var(--bg);bord
 <script>
 (function(){
 'use strict';
-var KEY='gb_pipeline_monitor_v1';
+var KEY='gb_pipeline_studio_v2';
 var $=function(s,r){return (r||document).querySelector(s)};
-function el(t,a,k){var e=document.createElement(t);if(a)for(var x in a){if(x==='class')e.className=a[x];else if(x==='text')e.textContent=a[x];else if(x.slice(0,2)==='on')e.addEventListener(x.slice(2),a[x]);else if(a[x]!==false&&a[x]!=null)e.setAttribute(x,a[x]===true?'':a[x])}
-  (k||[]).forEach(function(c){if(c!=null)e.appendChild(typeof c==='string'?document.createTextNode(c):c)});return e}
+function el(t,a,k){var e=document.createElement(t);if(a)for(var x in a){if(x==='class')e.className=a[x];else if(x==='text')e.textContent=a[x];else if(x==='value')e.value=a[x];else if(x.slice(0,2)==='on')e.addEventListener(x.slice(2),a[x]);else if(a[x]!==false&&a[x]!=null)e.setAttribute(x,a[x]===true?'':a[x])}
+  (k||[]).forEach(function(c){if(c!=null&&c!==false)e.appendChild(typeof c==='string'?document.createTextNode(c):c)});return e}
 var uid=function(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)};
 var fmt=function(ts){return new Date(ts).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})};
-var ws={pipelines:[],runs:[],audit:[],user:'',role:'Admin'},view={name:'health',id:null},mem={};
+var ws={pipelines:[],runs:[],audit:[],user:'',role:'Admin'},view={name:'health',id:null,tab:'extract'},mem={};
 function load(){try{var s=localStorage.getItem(KEY);if(s)ws=JSON.parse(s)}catch(e){}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(ws))}catch(e){toast('Could not save in this browser. Export a backup from Settings.')}}
-function toast(m){var t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){t.hidden=true},3200)}
-function log(act,detail){ws.audit.unshift({ts:Date.now(),by:ws.user||'Unnamed',role:ws.role,act:act,detail:detail});if(ws.audit.length>2000)ws.audit.length=2000}
+function toast(m){var t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){t.hidden=true},3600)}
+function log(act,detail,by){ws.audit.unshift({ts:Date.now(),by:by||ws.user||'Unnamed',role:by?'System':ws.role,act:act,detail:detail});if(ws.audit.length>2000)ws.audit.length=2000}
 var can=function(what){return ws.role==='Admin'||(ws.role==='Operator'&&(what==='run'||what==='resolve'))};
 var pOf=function(id){return ws.pipelines.filter(function(p){return p.id===id})[0]};
 var runsOf=function(id){return ws.runs.filter(function(r){return r.pid===id})};
@@ -113,21 +125,68 @@ function statusOf(p){var r=runsOf(p.id)[0];if(!r)return {k:'n',t:'Not run yet'};
   if(p.every&&Date.now()-r.ts>p.every*36e5*1.25)return {k:'w',t:'Overdue'};return {k:'ok',t:r.resolved?'Resolved':'Healthy'}}
 var openAlerts=function(){return ws.runs.filter(function(r){return r.status!=='Passed'&&!r.resolved&&pOf(r.pid)})};
 
-/* ---------- file reading ---------- */
-function parseCSV(text){var rows=[],row=[],cur='',q=false,i=0,c;text=text.replace(/^﻿/,'');
+/* ================= EXTRACT ================= */
+function parseDelim(text,dl){var rows=[],row=[],cur='',q=false,i=0,c;text=text.replace(/^﻿/,'');
   for(;i<text.length;i++){c=text[i];if(q){if(c==='"'){if(text[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
-    else if(c==='"')q=true;else if(c===','){row.push(cur);cur=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cur);cur='';if(row.length>1||row[0]!=='')rows.push(row);row=[]}else cur+=c}
+    else if(c==='"')q=true;else if(c===dl){row.push(cur);cur=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cur);cur='';if(row.length>1||row[0]!=='')rows.push(row);row=[]}else cur+=c}
   row.push(cur);if(row.length>1||row[0]!=='')rows.push(row);return rows}
+function jsonToRows(obj){var arr=Array.isArray(obj)?obj:null;if(!arr&&obj&&typeof obj==='object'){for(var k in obj)if(Array.isArray(obj[k])){arr=obj[k];break}}
+  if(!arr)throw new Error('The JSON has no list of records.');var h=[];arr.forEach(function(o){if(o&&typeof o==='object')Object.keys(o).forEach(function(k){if(h.indexOf(k)<0)h.push(k)})});
+  if(!h.length)throw new Error('The JSON records have no fields.');return [h].concat(arr.map(function(o){return h.map(function(k){var v=o?o[k]:'';return v==null?'':typeof v==='object'?JSON.stringify(v):String(v)})}))}
+function parseText(text){var t=text.trim();if(!t)return [];if(t[0]==='['||t[0]==='{'){return jsonToRows(JSON.parse(t))}
+  var first=t.split(/\r?\n/)[0];return parseDelim(t,(first.split('\t').length>first.split(',').length)?'\t':(first.split(';').length>first.split(',').length?';':','))}
 function readFile(file,cb){var n=file.name.toLowerCase(),fr=new FileReader();
   if(/\.(xlsx|xls)$/.test(n)){if(!window.XLSX){toast('Excel reading is unavailable. Save the sheet as CSV and try again.');return}
     fr.onload=function(){try{var wb=XLSX.read(new Uint8Array(fr.result),{type:'array'}),sh=wb.Sheets[wb.SheetNames[0]];cb(XLSX.utils.sheet_to_json(sh,{header:1,raw:false,defval:''}).map(function(r){return r.map(String)}),file.name)}catch(e){toast('That Excel file could not be read.')}};fr.readAsArrayBuffer(file)}
-  else{fr.onload=function(){cb(parseCSV(String(fr.result)),file.name)};fr.readAsText(file)}}
-function toCSV(rows){return rows.map(function(r){return r.map(function(v){v=String(v==null?'':v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(',')}).join('\r\n')}
-function download(name,text){var a=el('a',{href:URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'})),download:name});document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
-var isNum=function(v){return v!==''&&!isNaN(Number(String(v).replace(/[,₹\s]/g,'')))};
-var num=function(v){return Number(String(v).replace(/[,₹\s]/g,''))};
+  else{fr.onload=function(){try{cb(parseText(String(fr.result)),file.name)}catch(e){toast('That file could not be read: '+e.message)}};fr.readAsText(file)}}
+function extract(p){var s=p.source;
+  if(s.type==='url'){if(!s.url)return Promise.reject(new Error('No web address is set for this pipeline.'));
+    return fetch(s.url,{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('The address answered with error '+r.status+'.');return r.text()},function(){throw new Error('The address could not be reached from the browser. It may be offline or may not allow browser access.')}).then(function(t){return {rows:parseText(t),name:s.url.split('/').pop()||s.url}})}
+  if(s.type==='paste'){try{return Promise.resolve({rows:parseText(s.text||''),name:'pasted data'})}catch(e){return Promise.reject(new Error('The pasted data could not be read: '+e.message))}}
+  if(s.type==='sample')return Promise.resolve({rows:sample(s.kind,false),name:'sample-good.csv'});
+  if(mem[p.id]&&mem[p.id].src)return Promise.resolve({rows:mem[p.id].src,name:mem[p.id].name});
+  return Promise.reject(new Error('NOFILE'))}
 
-/* ---------- profile + checks ---------- */
+/* ================= TRANSFORM ================= */
+var isNum=function(v){return v!==''&&v!=null&&!isNaN(Number(String(v).replace(/[,₹\s]/g,'')))};
+var num=function(v){return Number(String(v).replace(/[,₹\s]/g,''))};
+function isoDate(v){v=String(v).trim();var m;if(!v)return v;if(/^\d{4}-\d{2}-\d{2}/.test(v))return v.slice(0,10);
+  if((m=/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})$/.exec(v))){var y=m[3].length===2?'20'+m[3]:m[3];return y+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[1]).slice(-2)}
+  var d=new Date(v);return isNaN(d)?v:d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+var COLS=function(t,s,keys){keys.forEach(function(k){var v=s[k];(Array.isArray(v)?v:[v]).forEach(function(c){if(c&&t.h.indexOf(c)<0)throw new Error('column “'+c+'” is not in the data at this step')})})};
+var OPS={
+ select:{label:'Keep columns',f:[['cols','Columns to keep','cols']],sum:function(s){return (s.cols||[]).join(', ')},run:function(t,s){COLS(t,s,['cols']);var ix=s.cols.map(function(c){return t.h.indexOf(c)});return {h:s.cols.slice(),d:t.d.map(function(r){return ix.map(function(i){return r[i]})})}}},
+ rename:{label:'Rename a column',f:[['col','Column','col'],['to','New name','text']],sum:function(s){return s.col+' → '+s.to},run:function(t,s){COLS(t,s,['col']);if(!s.to)throw new Error('a new name is needed');var h=t.h.slice();h[h.indexOf(s.col)]=s.to;return {h:h,d:t.d}}},
+ filter:{label:'Filter rows',f:[['col','Column','col'],['cmp','Keep rows where it','sel',['equals','does not equal','contains','does not contain','is greater than','is less than','is at least','is at most','is blank','is not blank']],['val','Value','text']],sum:function(s){return 'Keep rows where '+s.col+' '+s.cmp+(/blank/.test(s.cmp)?'':' '+s.val)},
+   run:function(t,s){COLS(t,s,['col']);var i=t.h.indexOf(s.col),v=String(s.val==null?'':s.val),n=isNum(v);return {h:t.h,d:t.d.filter(function(r){var x=String(r[i]==null?'':r[i]).trim(),both=n&&isNum(x),a=both?num(x):x.toLowerCase(),b=both?num(v):v.toLowerCase();
+     switch(s.cmp){case 'equals':return a===b;case 'does not equal':return a!==b;case 'contains':return x.toLowerCase().indexOf(v.toLowerCase())>=0;case 'does not contain':return x.toLowerCase().indexOf(v.toLowerCase())<0;case 'is greater than':return both&&a>b;case 'is less than':return both&&a<b;case 'is at least':return both&&a>=b;case 'is at most':return both&&a<=b;case 'is blank':return x==='';default:return x!==''}})}}},
+ trim:{label:'Trim spaces in every column',f:[],sum:function(){return 'All text values'},run:function(t){return {h:t.h.map(function(x){return String(x).trim()}),d:t.d.map(function(r){return r.map(function(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()})})}}},
+ textcase:{label:'Change text case',f:[['col','Column','col'],['mode','To','sel',['UPPER CASE','lower case','Title Case']]],sum:function(s){return s.col+' to '+s.mode},run:function(t,s){COLS(t,s,['col']);var i=t.h.indexOf(s.col);return {h:t.h,d:t.d.map(function(r){r=r.slice();var v=String(r[i]==null?'':r[i]);r[i]=s.mode==='UPPER CASE'?v.toUpperCase():s.mode==='lower case'?v.toLowerCase():v.toLowerCase().replace(/(^|\s)\S/g,function(c){return c.toUpperCase()});return r})}}},
+ replace:{label:'Find and replace',f:[['col','Column','col'],['find','Find','text'],['rep','Replace with','text']],sum:function(s){return 'In '+s.col+': “'+s.find+'” → “'+(s.rep||'')+'”'},run:function(t,s){COLS(t,s,['col']);if(!s.find)throw new Error('text to find is needed');var i=t.h.indexOf(s.col);return {h:t.h,d:t.d.map(function(r){r=r.slice();r[i]=String(r[i]==null?'':r[i]).split(s.find).join(s.rep||'');return r})}}},
+ tonumber:{label:'Convert to a plain number',f:[['col','Column','col']],sum:function(s){return s.col+' (removes commas and ₹)'},run:function(t,s){COLS(t,s,['col']);var i=t.h.indexOf(s.col);return {h:t.h,d:t.d.map(function(r){r=r.slice();if(isNum(r[i]))r[i]=String(num(r[i]));return r})}}},
+ todate:{label:'Standardise a date',f:[['col','Column','col']],sum:function(s){return s.col+' to year-month-day'},run:function(t,s){COLS(t,s,['col']);var i=t.h.indexOf(s.col);return {h:t.h,d:t.d.map(function(r){r=r.slice();r[i]=isoDate(r[i]);return r})}}},
+ compute:{label:'Add a calculated column',f:[['name','New column name','text'],['left','First column','col'],['opr','Operation','sel',['add','subtract','multiply by','divide by','join text with']],['rtype','Second value is','sel',['a fixed value','another column']],['right','Fixed value','text'],['rcol','Other column','col']],
+   sum:function(s){return s.name+' = '+s.left+' '+s.opr+' '+(s.rtype==='another column'?s.rcol:s.right)},
+   run:function(t,s){COLS(t,s,s.rtype==='another column'?['left','rcol']:['left']);if(!s.name)throw new Error('a name for the new column is needed');var a=t.h.indexOf(s.left),b=t.h.indexOf(s.rcol);
+     return {h:t.h.concat([s.name]),d:t.d.map(function(r){var x=r[a],y=s.rtype==='another column'?r[b]:s.right,o='';if(s.opr==='join text with')o=String(x==null?'':x)+String(y==null?'':y);
+       else if(isNum(x)&&isNum(y)){var p=num(x),q=num(y),v=s.opr==='add'?p+q:s.opr==='subtract'?p-q:s.opr==='multiply by'?p*q:(q===0?NaN:p/q);o=isNaN(v)?'':String(Math.round(v*100)/100)}return r.concat([o])})}}},
+ dedupe:{label:'Remove duplicate rows',f:[['col','Based on column','col']],sum:function(s){return 'Keep the first row for each '+s.col},run:function(t,s){COLS(t,s,['col']);var i=t.h.indexOf(s.col),seen={};return {h:t.h,d:t.d.filter(function(r){var k=String(r[i]).trim().toLowerCase();if(seen[k])return false;seen[k]=1;return true})}}},
+ sort:{label:'Sort rows',f:[['col','By column','col'],['dir','Order','sel',['smallest first','largest first']]],sum:function(s){return 'By '+s.col+', '+s.dir},run:function(t,s){COLS(t,s,['col']);var i=t.h.indexOf(s.col),m=s.dir==='largest first'?-1:1;return {h:t.h,d:t.d.slice().sort(function(x,y){var a=x[i],b=y[i];if(isNum(a)&&isNum(b))return (num(a)-num(b))*m;return String(a).localeCompare(String(b))*m})}}},
+ fill:{label:'Fill blank values',f:[['col','Column','col'],['val','Fill with','text']],sum:function(s){return 'Blank '+s.col+' becomes “'+(s.val||'')+'”'},run:function(t,s){COLS(t,s,['col']);var i=t.h.indexOf(s.col);return {h:t.h,d:t.d.map(function(r){if(String(r[i]==null?'':r[i]).trim()==='') {r=r.slice();r[i]=s.val||''}return r})}}},
+ split:{label:'Split a column',f:[['col','Column','col'],['by','Split at','text']],sum:function(s){return s.col+' at “'+s.by+'”'},run:function(t,s){COLS(t,s,['col']);if(!s.by)throw new Error('the text to split at is needed');var i=t.h.indexOf(s.col),mx=1;var parts=t.d.map(function(r){var p=String(r[i]==null?'':r[i]).split(s.by);if(p.length>mx)mx=Math.min(p.length,6);return p});
+     var nh=[];for(var k=1;k<=mx;k++)nh.push(s.col+' '+k);return {h:t.h.concat(nh),d:t.d.map(function(r,ri){var o=r.slice();for(var k=0;k<mx;k++)o.push((parts[ri][k]||'').trim());return o})}}},
+ group:{label:'Group and total',f:[['by','Group by','col'],['fn','Calculate','sel',['sum','count','average','smallest','largest']],['col','Of column','col']],sum:function(s){return s.fn+' of '+s.col+' for each '+s.by},
+   run:function(t,s){COLS(t,s,['by','col']);var b=t.h.indexOf(s.by),c=t.h.indexOf(s.col),g={},order=[];t.d.forEach(function(r){var k=String(r[b]);if(!g[k]){g[k]=[];order.push(k)}g[k].push(r[c])});
+     return {h:[s.by,s.fn+' of '+s.col],d:order.map(function(k){var v=g[k],ns=v.filter(isNum).map(num),o=s.fn==='count'?v.length:!ns.length?'':s.fn==='sum'?ns.reduce(function(a,x){return a+x},0):s.fn==='average'?ns.reduce(function(a,x){return a+x},0)/ns.length:s.fn==='smallest'?Math.min.apply(0,ns):Math.max.apply(0,ns);return [k,o===''?'':String(Math.round(o*100)/100)]})}}},
+ lookup:{label:'Look up from another table',f:[['col','Match on column','col'],['ref','Reference table','ref']],sum:function(s){return s.ref?'Match '+s.col+' to “'+s.ref.h[0]+'” and add '+(s.ref.h.length-1)+' column'+(s.ref.h.length===2?'':'s'):'No reference table yet'},
+   run:function(t,s){COLS(t,s,['col']);if(!s.ref)throw new Error('a reference table is needed');var i=t.h.indexOf(s.col),map={};s.ref.d.forEach(function(r){map[String(r[0]).trim().toLowerCase()]=r});var add=s.ref.h.slice(1);
+     return {h:t.h.concat(add),d:t.d.map(function(r){var m=map[String(r[i]).trim().toLowerCase()];return r.concat(add.map(function(_,k){return m?m[k+1]:''}))})}}}
+};
+function applySteps(rows,steps,upto){var t={h:rows.length?rows[0].map(function(x){return String(x).trim()}):[],d:[]},trace=[],n=upto==null?steps.length:upto;t.d=rows.slice(1).map(function(r){if(r.length===t.h.length)return r;r=r.slice(0,t.h.length);while(r.length<t.h.length)r.push('');return r});
+  for(var i=0;i<n;i++){var s=steps[i],inn=t.d.length;try{t=OPS[s.op].run(t,s);trace.push({i:i,op:s.op,rowsIn:inn,rowsOut:t.d.length})}catch(e){trace.push({i:i,op:s.op,rowsIn:inn,rowsOut:inn,error:e.message});return {rows:[t.h].concat(t.d),trace:trace,error:'Step '+(i+1)+' ('+OPS[s.op].label+'): '+e.message+'.',errStep:i}}}
+  return {rows:[t.h].concat(t.d),trace:trace}}
+
+/* ================= CHECK ================= */
 function profile(rows){var h=rows[0].map(function(x){return String(x).trim()}),d=rows.slice(1),req=[],numc=[],key='';
   h.forEach(function(c,i){var vals=d.map(function(r){return (r[i]==null?'':String(r[i])).trim()}),blank=vals.filter(function(v){return v===''}).length,nn=vals.filter(isNum).length;
     if(d.length&&blank===0)req.push(c);if(d.length&&nn/Math.max(1,d.length-blank)>.95&&nn>0)numc.push(c);
@@ -135,119 +194,223 @@ function profile(rows){var h=rows[0].map(function(x){return String(x).trim()}),d
   return {cols:h,required:req,numeric:numc,key:key,minRows:Math.max(1,Math.floor(d.length*.5)),maxDropPct:30,allowNegative:false}}
 function check(p,rows){var issues=[],h=rows.length?rows[0].map(function(x){return String(x).trim()}):[],d=rows.slice(1),R=p.rules,bad={};
   var add=function(sev,code,msg,fix,count){issues.push({sev:sev,code:code,msg:msg,fix:fix,count:count||0})};
-  if(!rows.length||!d.length){add('fail','EMPTY','The file has no data rows.','The source system may have exported before its own job finished. Run the export again, then retry here.');return {issues:issues,status:'Failed',rows:0,clean:[],rejected:[]}}
+  if(!rows.length||!d.length){add('fail','EMPTY','There are no data rows after the transform steps.','Either the source sent an empty file, or a filter step removed every row. Check the source, then the filter steps.');return {issues:issues,rows:0,clean:[h],rejected:[h.concat(['Reason'])],header:h}}
   var missing=R.cols.filter(function(c){return h.indexOf(c)<0}),extra=h.filter(function(c){return c&&R.cols.indexOf(c)<0});
-  if(missing.length)add('fail','COLUMNS_MISSING','Expected column'+(missing.length>1?'s':'')+' not found: '+missing.join(', ')+'.',extra.length?'The source probably renamed a column (new column seen: '+extra.join(', ')+'). Ask the source owner to restore the name, or accept the new layout below if the change is intended.':'A column was removed at the source. Ask the source owner to restore it, or remove it from the expected columns.');
-  else if(extra.length)add('warn','COLUMNS_NEW','New column'+(extra.length>1?'s':'')+' in the file: '+extra.join(', ')+'.','Nothing is broken, but the next system will ignore the new data until the layout is accepted.');
-  if(d.length<R.minRows)add('fail','TOO_FEW_ROWS',d.length+' rows received; at least '+R.minRows+' expected.','A partial export is the usual cause. Check the source filter or date range, then retry.');
+  if(missing.length)add('fail','COLUMNS_MISSING','Expected column'+(missing.length>1?'s':'')+' not found: '+missing.join(', ')+'.',extra.length?'The source probably renamed a column (new column seen: '+extra.join(', ')+'). Ask the source owner to restore the name, add a Rename step, or accept the new layout in the Check tab.':'A column was removed at the source or by a transform step. Restore it, or re-learn the checks in the Check tab.');
+  else if(extra.length)add('warn','COLUMNS_NEW','New column'+(extra.length>1?'s':'')+' in the output: '+extra.join(', ')+'.','Nothing is broken. Re-learn the checks in the Check tab to include the new column'+(extra.length>1?'s':'')+'.');
+  if(d.length<R.minRows)add('fail','TOO_FEW_ROWS',d.length+' rows; at least '+R.minRows+' expected.','A partial export is the usual cause. Check the source filter or date range, then retry.');
   var last=runsOf(p.id).filter(function(r){return r.status!=='Failed'})[0];
   if(last&&last.rows&&d.length<last.rows*(1-R.maxDropPct/100))add('warn','VOLUME_DROP','Row count fell from '+last.rows+' to '+d.length+' ('+Math.round((1-d.length/last.rows)*100)+'% lower than the last good run).','Confirm with the source owner that the drop is real before the data is used.');
   R.required.forEach(function(c){var i=h.indexOf(c);if(i<0)return;var n=0;d.forEach(function(r,ri){if(String(r[i]==null?'':r[i]).trim()===''){n++;bad[ri]='Blank '+c}});
-    if(n)add(n/d.length>.02?'fail':'warn','BLANKS',n+' row'+(n>1?'s have':' has')+' no value in “'+c+'”.','Rows with blanks are held back in the rejected file. Fill the values at the source and retry.',n)});
+    if(n)add(n/d.length>.02?'fail':'warn','BLANKS',n+' row'+(n>1?'s have':' has')+' no value in “'+c+'”.','Rows with blanks are held back. Fill the values at the source, or add a Fill blank values step.',n)});
   if(R.key&&h.indexOf(R.key)>=0){var ki=h.indexOf(R.key),seen={},n=0;d.forEach(function(r,ri){var v=String(r[ki]).trim();if(v==='')return;if(seen[v]){n++;bad[ri]=bad[ri]||'Duplicate '+R.key}else seen[v]=1});
-    if(n)add('warn','DUPLICATES',n+' duplicate value'+(n>1?'s':'')+' in the key column “'+R.key+'”.','The same record was exported twice. Duplicates are held back; the first copy is kept.',n)}
+    if(n)add('warn','DUPLICATES',n+' duplicate value'+(n>1?'s':'')+' in the key column “'+R.key+'”.','The same record arrived twice. Duplicates are held back; add a Remove duplicate rows step to drop them quietly.',n)}
   R.numeric.forEach(function(c){var i=h.indexOf(c);if(i<0)return;var nb=0,ng=0;d.forEach(function(r,ri){var v=String(r[i]==null?'':r[i]).trim();if(v==='')return;if(!isNum(v)){nb++;bad[ri]=bad[ri]||'Not a number in '+c}else if(!R.allowNegative&&num(v)<0){ng++;bad[ri]=bad[ri]||'Negative '+c}});
     if(nb)add('fail','NOT_NUMBER',nb+' value'+(nb>1?'s':'')+' in “'+c+'” '+(nb>1?'are':'is')+' not a number.','Text has been typed into a number column, or the export format changed. Correct the source and retry.',nb);
-    if(ng)add('warn','NEGATIVE',ng+' negative value'+(ng>1?'s':'')+' in “'+c+'”.','Negative values are held back. If returns or credits are expected here, allow negatives in the rules.',ng)});
+    if(ng)add('warn','NEGATIVE',ng+' negative value'+(ng>1?'s':'')+' in “'+c+'”.','Negative values are held back. If returns or credits are expected, allow negatives in the Check tab.',ng)});
   var clean=[h],rej=[h.concat(['Reason'])];d.forEach(function(r,ri){if(bad[ri])rej.push(r.concat([bad[ri]]));else clean.push(r)});
-  var st=issues.some(function(x){return x.sev==='fail'})?'Failed':issues.length?'Warning':'Passed';
-  return {issues:issues,status:st,rows:d.length,clean:clean,rejected:rej,header:h}}
-function runPipeline(p,rows,fileName,retryOf){if(!can('run')){toast('Your role cannot run pipelines.');return}
-  if(!p.rules){p.rules=profile(rows);log('Rules created','“'+p.name+'”: '+p.rules.cols.length+' columns learned from '+fileName)}
-  var res=check(p,rows),run={id:uid(),pid:p.id,ts:Date.now(),by:ws.user||'Unnamed',file:fileName,rows:res.rows,status:res.status,issues:res.issues,cleanRows:Math.max(0,res.clean.length-1),rejectedRows:Math.max(0,res.rejected.length-1),resolved:null,retryOf:retryOf||null};
-  ws.runs.unshift(run);if(ws.runs.length>500)ws.runs.length=500;mem[run.id]={clean:res.clean,rejected:res.rejected,header:res.header};
-  log(retryOf?'Retry':'Run','“'+p.name+'” with '+fileName+': '+res.status+', '+res.rows+' rows, '+res.issues.length+' issue'+(res.issues.length===1?'':'s'));
-  if(retryOf&&res.status==='Passed'){var old=ws.runs.filter(function(r){return r.id===retryOf})[0];if(old&&!old.resolved){old.resolved={by:run.by,ts:Date.now(),note:'Fixed by a successful retry.'};log('Resolved','“'+p.name+'”: earlier failure closed by a successful retry')}}
-  save();go('pipe',p.id);toast(res.status==='Passed'?'Run passed. The clean file is ready.':'Run '+res.status.toLowerCase()+'. See the issues and suggested fixes.')}
+  return {issues:issues,rows:d.length,clean:clean,rejected:rej,header:h}}
 
-/* ---------- sample data ---------- */
+/* ================= LOAD ================= */
+function toCSV(rows){return rows.map(function(r){return r.map(function(v){v=String(v==null?'':v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(',')}).join('\r\n')}
+function toObjs(rows){var h=rows[0];return rows.slice(1).map(function(r){var o={};h.forEach(function(k,i){o[k]=r[i]});return o})}
+function dl(name,blob){var a=el('a',{href:URL.createObjectURL(blob),download:name});document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
+function exportRows(base,rows,format){if(format==='Excel'&&window.XLSX){var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(rows),'Data');XLSX.writeFile(wb,base+'.xlsx')}
+  else if(format==='JSON')dl(base+'.json',new Blob([JSON.stringify(toObjs(rows),null,1)],{type:'application/json'}));else dl(base+'.csv',new Blob([toCSV(rows)],{type:'text/csv;charset=utf-8'}))}
+function loadOut(p,run,clean,auto){var d=p.dest,base=p.name.replace(/\W+/g,'-').toLowerCase(),parts=[],jobs=[];
+  if((d.type==='file'||d.type==='both')&&!auto){exportRows(base+'-clean',clean,d.format);parts.push('file downloaded ('+d.format+')')}
+  if(d.type==='web'||d.type==='both'){if(!d.url)return Promise.resolve({ok:false,msg:'No destination address is set.'});
+    var body=JSON.stringify({pipeline:p.name,run:run.id,sentAt:new Date().toISOString(),columns:clean[0],rowCount:clean.length-1,rows:toObjs(clean)});
+    jobs.push(fetch(d.url,{method:'POST',headers:{'Content-Type':'application/json'},body:body}).then(function(r){if(!r.ok)throw new Error('destination answered with error '+r.status);parts.push((clean.length-1)+' rows sent to the destination address')},
+      function(){return fetch(d.url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:body}).then(function(){parts.push((clean.length-1)+' rows sent; the destination did not confirm receipt')},function(){throw new Error('the destination address could not be reached')})}))}
+  return Promise.all(jobs).then(function(){return {ok:true,msg:parts.join('; ')||'Ready to download'}},function(e){return {ok:false,msg:'Load failed: '+e.message+'.'}})}
+
+/* ================= RUN ================= */
+function runPipeline(p,opt){opt=opt||{};if(!opt.auto&&!can('run')){toast('Your role cannot run pipelines.');return Promise.resolve()}
+  var t0=Date.now(),by=opt.auto?'Scheduler':(ws.user||'Unnamed'),prev=runsOf(p.id)[0],retryOf=(prev&&prev.status!=='Passed'&&!prev.resolved)?prev.id:null;
+  var finish=function(run,m){ws.runs.unshift(run);if(ws.runs.length>600)ws.runs.length=600;if(m)mem[run.id]=m;
+    log(opt.auto?'Scheduled run':retryOf?'Retry':'Run','“'+p.name+'”: '+run.status+', '+run.rowsIn+' rows in, '+run.rows+' out, '+run.issues.length+' issue'+(run.issues.length===1?'':'s')+', '+run.ms+' ms',opt.auto?'Scheduler':null);
+    if(retryOf&&run.status==='Passed'){var old=ws.runs.filter(function(r){return r.id===retryOf})[0];if(old&&!old.resolved){old.resolved={by:by,ts:Date.now(),note:'Fixed by a successful retry.'};log('Resolved','“'+p.name+'”: earlier failure closed by a successful retry',opt.auto?'Scheduler':null)}}
+    save();if(!opt.auto){view.tab=run.status==='Passed'?'monitor':'check';go('pipe',p.id);toast(run.status==='Passed'?'Run passed. '+(run.load?run.load.msg:''):'Run '+run.status.toLowerCase()+'. See the issues and suggested fixes.')}else if(view.name==='health'||view.id===p.id)render()};
+  var base=function(){return {id:uid(),pid:p.id,ts:Date.now(),by:by,auto:!!opt.auto,file:'',rowsIn:0,rows:0,cleanRows:0,rejectedRows:0,status:'Failed',issues:[],trace:[],ms:0,load:null,resolved:null,retryOf:retryOf}};
+  var src=opt.rows?Promise.resolve({rows:opt.rows,name:opt.name}):extract(p);
+  return src.then(function(x){var run=base();run.file=x.name;run.rowsIn=Math.max(0,x.rows.length-1);
+    if(p.source.type==='file'||opt.rows){mem[p.id]={src:x.rows,name:x.name}}var samp=x.rows.slice(0,60);if(!p.sampleRows)p.sampleRows=samp;
+    var tr=applySteps(x.rows,p.steps||[]);run.trace=tr.trace;
+    if(tr.error){run.issues=[{sev:'fail',code:'STEP_ERROR',msg:tr.error,fix:'The data no longer matches what this step expects. Open the Transform tab, fix or remove the step, then run again.'}];run.ms=Date.now()-t0;finish(run);return}
+    if(!p.rules){p.rules=profile(tr.rows);log('Checks learned','“'+p.name+'”: '+p.rules.cols.length+' columns',opt.auto?'Scheduler':null)}
+    var res=check(p,tr.rows);run.rows=res.rows;run.issues=res.issues;run.cleanRows=Math.max(0,res.clean.length-1);run.rejectedRows=Math.max(0,res.rejected.length-1);
+    run.status=res.issues.some(function(i){return i.sev==='fail'})?'Failed':res.issues.length?'Warning':'Passed';
+    var m={clean:res.clean,rejected:res.rejected,header:res.header};
+    if(run.status==='Failed'){run.load={ok:false,msg:'Not loaded: the run failed its checks.'};run.ms=Date.now()-t0;finish(run,m);return}
+    p.sampleRows=samp;return loadOut(p,run,res.clean,opt.auto).then(function(L){run.load=L;if(!L.ok){run.status='Failed';run.issues.push({sev:'fail',code:'LOAD_FAILED',msg:L.msg,fix:'Check the destination address in the Load tab and that the receiving system is running, then retry.'})}run.ms=Date.now()-t0;finish(run,m)})},
+   function(e){if(e.message==='NOFILE'){toast('Choose a file in the Extract tab to run this pipeline.');view.tab='extract';go('pipe',p.id);return}
+    var run=base();run.file=p.source.url||'';run.issues=[{sev:'fail',code:'EXTRACT_FAILED',msg:'Extract failed: '+e.message,fix:'Check the source in the Extract tab. For a web address, confirm it opens in a browser and allows access from other sites.'}];run.ms=Date.now()-t0;finish(run)})}
+/* scheduler: runs web-address pipelines while this page is open */
+var busy={};
+setInterval(function(){ws.pipelines.forEach(function(p){if(!p.schedule||!p.schedule.on||p.source.type!=='url'||busy[p.id])return;var r=runsOf(p.id)[0];if(r&&Date.now()-r.ts<p.schedule.minutes*6e4)return;busy[p.id]=true;runPipeline(p,{auto:true}).then(function(){delete busy[p.id]},function(){delete busy[p.id]})})},20000);
+
+/* ================= SAMPLE ================= */
 function sample(kind,broken){var r=[],i,s=11,rnd=function(){s=(s*16807)%2147483647;return s/2147483647};
-  if(kind==='sales'){r.push(['Invoice No','Date','Customer','GST No','Amount','Region']);for(i=1;i<=(broken?70:120);i++)r.push(['INV-'+(3000+i),'2026-11-'+String(1+i%16).padStart(2,'0'),['Shree Traders','Kaveri Foods','Deccan Agro','Mahal Retail'][i%4],'27AAAC'+(1000+i)+'Z1',String(Math.round(8000+rnd()*90000)),['West','North','South','Export'][i%4]]);if(broken)r[0][3]='GSTIN'}
+  if(kind==='sales'){r.push(['Invoice No','Date','Customer','GST No','Amount','Region']);for(i=1;i<=(broken?70:120);i++)r.push(['INV-'+(3000+i),String(1+i%16).padStart(2,'0')+'/11/2026',['  shree traders','Kaveri Foods ','DECCAN AGRO','Mahal Retail'][i%4],'27AAAC'+(1000+i)+'Z1','₹'+Math.round(8000+rnd()*90000).toLocaleString('en-IN'),['West','North','South','Export'][i%4]]);if(broken)r[0][3]='GSTIN'}
   if(kind==='cust'){r.push(['Customer ID','Name','Email','City','Credit Limit']);for(i=1;i<=80;i++)r.push(['C'+(100+i),'Customer '+i,(broken&&i%9===0)?'':'buyer'+i+'@example.com',['Pune','Mumbai','Nashik','Nagpur'][i%4],String(50000+i*1000)]);if(broken){r.push(r[5].slice());r.push(r[12].slice());r.push(r[20].slice())}}
   if(kind==='stock'){r.push(['SKU','Item','Warehouse','Quantity','Unit Cost']);for(i=1;i<=60;i++)r.push(['SKU-'+(500+i),'Item '+i,['Kharadi','Chakan'][i%2],String((broken&&i%11===0)?-Math.round(rnd()*40):(broken&&i%17===0)?'n/a':Math.round(rnd()*900)),(40+rnd()*400).toFixed(2)])}
   return r}
-function loadSample(){ws.pipelines=[{id:'s1',name:'Daily sales export',source:'Billing system',dest:'Accounts dashboard',owner:'Finance lead',channel:'WhatsApp',contact:'',every:24,sample:'sales'},{id:'s2',name:'Customer master sync',source:'Order sheet',dest:'CRM',owner:'Sales operations',channel:'Email',contact:'',every:168,sample:'cust'},{id:'s3',name:'Stock levels feed',source:'Warehouse system',dest:'Planning sheet',owner:'Warehouse manager',channel:'WhatsApp',contact:'',every:24,sample:'stock'}];
-  ws.runs=[];mem={};log('Sample loaded','Three sample pipelines created');ws.pipelines.forEach(function(p){p.rules=profile(sample(p.sample,false))});save();go('health');toast('Sample workspace loaded. Open a pipeline and run a good or a broken file.')}
+function newPipe(o){return Object.assign({id:uid(),name:'',owner:'',channel:'WhatsApp',contact:'',every:0,source:{type:'file',label:'Source system',url:'',text:''},steps:[],rules:null,dest:{type:'file',label:'Destination',format:'CSV',url:''},schedule:{on:false,minutes:60},sampleRows:null},o)}
+function loadSample(){ws.pipelines=[
+  newPipe({id:'s1',name:'Daily sales export',owner:'Finance lead',every:24,sample:'sales',source:{type:'file',label:'Billing system',url:'',text:''},dest:{type:'file',label:'Accounts dashboard',format:'Excel',url:''},steps:[{op:'trim'},{op:'textcase',col:'Customer',mode:'Title Case'},{op:'tonumber',col:'Amount'},{op:'todate',col:'Date'},{op:'compute',name:'Amount with GST',left:'Amount',opr:'multiply by',rtype:'a fixed value',right:'1.18'}]}),
+  newPipe({id:'s2',name:'Customer master sync',owner:'Sales operations',channel:'Email',every:168,sample:'cust',source:{type:'file',label:'Order sheet',url:'',text:''},dest:{type:'file',label:'CRM',format:'CSV',url:''},steps:[{op:'trim'},{op:'textcase',col:'Email',mode:'lower case'}]}),
+  newPipe({id:'s3',name:'Stock value by warehouse',owner:'Warehouse manager',every:24,sample:'stock',source:{type:'file',label:'Warehouse system',url:'',text:''},dest:{type:'file',label:'Planning sheet',format:'CSV',url:''},steps:[{op:'compute',name:'Stock Value',left:'Quantity',opr:'multiply by',rtype:'another column',rcol:'Unit Cost'}]}),
+  newPipe({id:'s4',name:'Orders feed from a web address',owner:'Operations',every:1,source:{type:'url',label:'Order system',url:'sample-data/orders.json',text:''},dest:{type:'file',label:'Dispatch board',format:'CSV',url:''},schedule:{on:false,minutes:5},steps:[{op:'filter',col:'status',cmp:'does not equal',val:'cancelled'},{op:'sort',col:'amount',dir:'largest first'}]})];
+  ws.runs=[];mem={};ws.pipelines.forEach(function(p){if(p.sample){var g=sample(p.sample,false);p.sampleRows=g.slice(0,60);p.rules=profile(applySteps(g,p.steps).rows)}});log('Sample loaded','Four sample pipelines created');save();go('health');toast('Sample workspace loaded. Open a pipeline and run it.')}
 
-/* ---------- alerts ---------- */
-function alertText(r){var p=pOf(r.pid);return 'Pipeline alert: '+p.name+'\nStatus: '+r.status+' at '+fmt(r.ts)+'\nRoute: '+p.source+' to '+p.dest+'\nFile: '+r.file+' ('+r.rows+' rows)\n\n'+r.issues.map(function(x,i){return (i+1)+'. '+x.msg+'\n   Likely fix: '+x.fix}).join('\n')+'\n\nOwner: '+p.owner}
-function alertLinks(r){var p=pOf(r.pid),t=encodeURIComponent(alertText(r)),digits=(p.contact||'').replace(/\D/g,''),o=[];
-  o.push(el('a',{class:'btn h',target:'_blank',rel:'noopener',href:'https://wa.me/'+(p.channel==='WhatsApp'?digits:'')+'?text='+t,text:'Send on WhatsApp'}));
-  o.push(el('a',{class:'btn g',href:'mailto:'+(p.channel==='Email'?encodeURIComponent(p.contact||''):'')+'?subject='+encodeURIComponent('Pipeline alert: '+p.name+' '+r.status)+'&body='+t,text:'Send by email'}));return o}
+/* ================= ALERTS ================= */
+function alertText(r){var p=pOf(r.pid);return 'Pipeline alert: '+p.name+'\nStatus: '+r.status+' at '+fmt(r.ts)+'\nRoute: '+p.source.label+' to '+p.dest.label+'\nRows: '+r.rowsIn+' in, '+r.rows+' out\n\n'+r.issues.map(function(x,i){return (i+1)+'. '+x.msg+'\n   Likely fix: '+x.fix}).join('\n')+'\n\nOwner: '+(p.owner||'not set')}
+function alertLinks(r){var p=pOf(r.pid),t=encodeURIComponent(alertText(r)),digits=(p.contact||'').replace(/\D/g,'');
+  return [el('a',{class:'btn h',target:'_blank',rel:'noopener',href:'https://wa.me/'+(p.channel==='WhatsApp'?digits:'')+'?text='+t,text:'Send on WhatsApp'}),el('a',{class:'btn g',href:'mailto:'+(p.channel==='Email'?encodeURIComponent(p.contact||''):'')+'?subject='+encodeURIComponent('Pipeline alert: '+p.name+' '+r.status)+'&body='+t,text:'Send by email'})]}
 
-/* ---------- views ---------- */
+/* ================= VIEWS ================= */
 var V={};
-function go(name,id){view={name:name,id:id||null};render()}
+function go(name,id){view.name=name;view.id=id||null;render()}
 function header(title,sub,actions){return el('div',{class:'top'},[el('div',null,[el('h1',{text:title}),sub?el('p',{text:sub}):null]),el('div',{class:'row'},actions||[])])}
+function dataTable(rows,max){var t=el('table',{class:'data'},[el('tr',null,rows[0].map(function(h){return el('th',{text:h})}))]);rows.slice(1,(max||12)+1).forEach(function(r){t.appendChild(el('tr',null,rows[0].map(function(_,i){return el('td',{text:r[i]==null?'':String(r[i]),title:r[i]==null?'':String(r[i])})})))});return el('div',{class:'tw'},[t])}
+function barChart(days){var W=1100,H=170,mx=Math.max.apply(0,days.map(function(d){return d.p+d.w+d.f}))||1,bw=W/days.length,s='';
+  days.forEach(function(d,i){var x=i*bw+4,y=H-22,seg=function(v,c){if(!v)return;var h=v/mx*(H-40);y-=h;s+='<rect x="'+x+'" y="'+y+'" width="'+(bw-8)+'" height="'+h+'" rx="3" fill="'+c+'"/>'};seg(d.p,'#0A8F5B');seg(d.w,'#E0A100');seg(d.f,'#B42318');s+='<text x="'+(x+(bw-8)/2)+'" y="'+(H-6)+'" text-anchor="middle">'+d.l+'</text>'});
+  var e=el('div');e.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Runs per day for the last 14 days"><line x1="0" y1="'+(H-22)+'" x2="'+W+'" y2="'+(H-22)+'" stroke="#DFE7E0"/>'+s+'</svg>';return e}
+function spark(vals,color){if(vals.length<2)return el('p',{class:'note',text:'Needs at least two runs.'});var W=300,H=60,mx=Math.max.apply(0,vals)||1,mn=Math.min.apply(0,vals),pts=vals.map(function(v,i){return (i/(vals.length-1)*(W-8)+4).toFixed(1)+','+(H-6-((v-mn)/((mx-mn)||1))*(H-14)).toFixed(1)}).join(' ');
+  var e=el('div');e.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Trend"><polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="2.2" stroke-linejoin="round"/><circle cx="'+pts.split(' ').pop().split(',')[0]+'" cy="'+pts.split(' ').pop().split(',')[1]+'" r="3.5" fill="'+color+'"/></svg>';return e}
+
 V.health=function(m){
-  m.appendChild(header('Health','Every pipeline in one view. A pipeline is one regular data file moving from a source to a destination.',[can('edit')?el('button',{class:'btn',text:'New pipeline',onclick:function(){go('edit')}}):null]));
-  if(!ws.pipelines.length){m.appendChild(el('div',{class:'card empty'},[el('h2',{text:'No pipelines yet'}),el('p',{text:'Create your first pipeline and upload its file, or load the sample workspace to see how failures are caught and fixed.'}),el('div',{class:'row',style:'justify-content:center;margin-top:18px'},[el('button',{class:'btn',text:'New pipeline',onclick:function(){go('edit')}}),el('button',{class:'btn g',text:'Load sample workspace',onclick:loadSample})])]));return}
-  var st=ws.pipelines.map(statusOf),wk=ws.runs.filter(function(r){return Date.now()-r.ts<7*864e5}),ok=wk.filter(function(r){return r.status==='Passed'}).length;
-  m.appendChild(el('div',{class:'grid g4'},[['Pipelines',ws.pipelines.length],['Healthy',st.filter(function(s){return s.k==='ok'}).length],['Need attention',st.filter(function(s){return s.k==='b'||s.k==='w'}).length],['Runs passed, last 7 days',wk.length?Math.round(ok/wk.length*100)+'%':'–']].map(function(k){return el('div',{class:'card kpi'},[el('b',{text:String(k[1])}),el('span',{text:k[0]})])})));
-  var t=el('table',null,[el('tr',null,['Pipeline','Route','Owner','Last run','Status',''].map(function(h){return el('th',{text:h})}))]);
-  ws.pipelines.forEach(function(p){var s=statusOf(p),r=runsOf(p.id)[0];t.appendChild(el('tr',{class:'click',onclick:function(){go('pipe',p.id)}},[el('td',null,[el('b',{text:p.name})]),el('td',{text:p.source+' → '+p.dest}),el('td',{text:p.owner||'–'}),el('td',{text:r?fmt(r.ts):'Never'}),el('td',null,[el('span',{class:'pill '+s.k,text:s.t})]),el('td',null,[el('button',{class:'btn g',text:'Open',onclick:function(e){e.stopPropagation();go('pipe',p.id)}})])]))});
+  m.appendChild(header('Monitoring','Every pipeline in one view: what ran, what passed, what needs attention.',[can('edit')?el('button',{class:'btn',text:'New pipeline',onclick:function(){go('edit')}}):null]));
+  if(!ws.pipelines.length){m.appendChild(el('div',{class:'card empty'},[el('h2',{text:'No pipelines yet'}),el('p',{text:'A pipeline pulls data from a source, cleans and reshapes it, checks it and sends it on. Create one, or load the sample workspace to see four working examples.'}),el('div',{class:'row',style:'justify-content:center;margin-top:18px'},[el('button',{class:'btn',text:'New pipeline',onclick:function(){go('edit')}}),el('button',{class:'btn g',text:'Load sample workspace',onclick:loadSample})])]));return}
+  var st=ws.pipelines.map(statusOf),wk=ws.runs.filter(function(r){return Date.now()-r.ts<7*864e5}),ok=wk.filter(function(r){return r.status==='Passed'}).length,rowsOut=wk.reduce(function(a,r){return a+(r.cleanRows||0)},0);
+  m.appendChild(el('div',{class:'grid g4'},[['Pipelines healthy',st.filter(function(s){return s.k==='ok'}).length+' / '+ws.pipelines.length],['Need attention',st.filter(function(s){return s.k==='b'||s.k==='w'}).length],['Runs passed, last 7 days',wk.length?Math.round(ok/wk.length*100)+'%':'–'],['Rows delivered, last 7 days',rowsOut.toLocaleString('en-IN')]].map(function(k){return el('div',{class:'card kpi'},[el('b',{text:String(k[1])}),el('span',{text:k[0]})])})));
+  var days=[],d0=new Date();d0.setHours(0,0,0,0);for(var i=13;i>=0;i--){var a=d0.getTime()-i*864e5,rs=ws.runs.filter(function(r){return r.ts>=a&&r.ts<a+864e5});days.push({l:new Date(a).getDate(),p:rs.filter(function(r){return r.status==='Passed'}).length,w:rs.filter(function(r){return r.status==='Warning'}).length,f:rs.filter(function(r){return r.status==='Failed'}).length})}
+  m.appendChild(el('div',{class:'card',style:'margin-top:16px'},[el('div',{class:'row',style:'justify-content:space-between'},[el('span',{class:'lab',text:'RUNS PER DAY, LAST 14 DAYS'}),el('div',{class:'row'},[el('span',{class:'pill ok',text:'Passed'}),el('span',{class:'pill w',text:'Warning'}),el('span',{class:'pill b',text:'Failed'})])]),barChart(days)]));
+  var t=el('table',null,[el('tr',null,['Pipeline','Route','Steps','Last run','Rows out','Status',''].map(function(h){return el('th',{text:h})}))]);
+  ws.pipelines.forEach(function(p){var s=statusOf(p),r=runsOf(p.id)[0];t.appendChild(el('tr',{class:'click',onclick:function(){view.tab='extract';go('pipe',p.id)}},[el('td',null,[el('b',{text:p.name}),p.schedule.on&&p.source.type==='url'?el('span',{class:'pill',style:'margin-left:8px',text:'every '+p.schedule.minutes+' min'}):null]),el('td',{text:p.source.label+' → '+p.dest.label}),el('td',{text:String((p.steps||[]).length)}),el('td',{text:r?fmt(r.ts):'Never'}),el('td',{text:r?String(r.cleanRows):'–'}),el('td',null,[el('span',{class:'pill '+s.k,text:s.t})]),el('td',null,[el('button',{class:'btn g s',text:'Open',onclick:function(e){e.stopPropagation();view.tab='extract';go('pipe',p.id)}})])]))});
   m.appendChild(el('div',{class:'card',style:'margin-top:16px'},[el('span',{class:'lab',text:'ALL PIPELINES'}),el('div',{class:'tw'},[t])]))};
+
 V.edit=function(m){var p=view.id?pOf(view.id):null,f={};
-  var fld=function(k,label,ph,type){f[k]=el('input',{type:type||'text',placeholder:ph||'',value:p&&p[k]!=null?p[k]:''});return el('label',{class:'f'},[label,f[k]])};
+  var fld=function(k,label,ph,val,type){f[k]=el('input',{type:type||'text',placeholder:ph||'',value:val==null?'':val});return el('label',{class:'f'},[label,f[k]])};
   f.channel=el('select',null,['WhatsApp','Email'].map(function(c){return el('option',{text:c,selected:p&&p.channel===c})}));
-  m.appendChild(header(p?'Edit pipeline':'New pipeline','Describe where the file comes from, where it goes and who should hear about a failure.'));
-  m.appendChild(el('div',{class:'card'},[el('div',{class:'form'},[fld('name','PIPELINE NAME','Daily sales export'),fld('owner','OWNER','Finance lead'),fld('source','SOURCE SYSTEM','Billing system'),fld('dest','DESTINATION','Accounts dashboard'),el('label',{class:'f'},['ALERT CHANNEL',f.channel]),fld('contact','WHATSAPP NUMBER OR EMAIL','919800000000 or name@company.com'),fld('every','EXPECTED EVERY (HOURS)','24','number')]),
+  m.appendChild(header(p?'Pipeline details':'New pipeline','Name the pipeline and say who should hear about a failure. You set the source, steps and destination next.'));
+  m.appendChild(el('div',{class:'card'},[el('div',{class:'form'},[fld('name','PIPELINE NAME','Daily sales export',p&&p.name),fld('owner','OWNER','Finance lead',p&&p.owner),fld('src','SOURCE NAME','Billing system',p&&p.source.label),fld('dst','DESTINATION NAME','Accounts dashboard',p&&p.dest.label),el('label',{class:'f'},['ALERT CHANNEL',f.channel]),fld('contact','WHATSAPP NUMBER OR EMAIL','919800000000 or name@company.com',p&&p.contact),fld('every','EXPECTED EVERY (HOURS, 0 = NO CHECK)','24',p?p.every:'','number')]),
     el('div',{class:'row',style:'margin-top:18px'},[el('button',{class:'btn',text:p?'Save changes':'Create pipeline',onclick:function(){var n=f.name.value.trim();if(!n){f.name.focus();toast('Give the pipeline a name.');return}
-      var o=p||{id:uid(),rules:null};o.name=n;o.owner=f.owner.value.trim();o.source=f.source.value.trim()||'Source';o.dest=f.dest.value.trim()||'Destination';o.channel=f.channel.value;o.contact=f.contact.value.trim();o.every=Number(f.every.value)||0;
-      if(!p)ws.pipelines.push(o);log(p?'Pipeline edited':'Pipeline created','“'+n+'”');save();go('pipe',o.id)}}),el('button',{class:'btn g',text:'Cancel',onclick:function(){go(p?'pipe':'health',p&&p.id)}})])]))};
-V.pipe=function(m){var p=pOf(view.id);if(!p){go('health');return}var rs=runsOf(p.id),r=rs[0],s=statusOf(p);
-  m.appendChild(header(p.name,p.source+' → '+p.dest+(p.owner?' · owner: '+p.owner:''),[el('span',{class:'pill '+s.k,text:s.t}),can('edit')?el('button',{class:'btn g',text:'Edit',onclick:function(){go('edit',p.id)}}):null,can('edit')?el('button',{class:'btn d',text:'Delete',onclick:function(){if(this.dataset.sure){ws.pipelines=ws.pipelines.filter(function(x){return x.id!==p.id});log('Pipeline deleted','“'+p.name+'”');save();go('health')}else{this.dataset.sure=1;this.textContent='Click again to delete'}}}):null]));
-  var sc=function(n,t,c){return el('div',{class:'stg '+c},[el('b',{text:n}),el('span',{text:t})])};
-  m.appendChild(el('div',{class:'stages'},[sc('1 Connect',p.rules?p.rules.cols.length+' columns known':'Upload a first file',p.rules?'done':''),sc('2 Run',r?'Last: '+fmt(r.ts):'Not run yet',r?'done':''),sc('3 Check',r?(r.issues.length?r.issues.length+' issue'+(r.issues.length>1?'s':''):'All checks passed'):'Waiting',!r?'':r.status==='Passed'?'done':r.status==='Failed'?'bad':'warn'),sc('4 Fix',!r?'Waiting':r.status==='Passed'?'Nothing to fix':r.resolved?'Resolved by '+r.resolved.by:'Open',!r?'':(r.status==='Passed'||r.resolved)?'done':'bad')]));
-  var left=el('div',{class:'grid'}),right=el('div',{class:'grid',style:'align-content:start'});
-  /* run box */
-  var fi=el('input',{type:'file',accept:'.csv,.xlsx,.xls,.txt',hidden:true,'aria-label':'Choose a data file',onchange:function(){if(fi.files[0])readFile(fi.files[0],function(rows,name){runPipeline(p,rows,name,(r&&r.status!=='Passed'&&!r.resolved)?r.id:null)})}});
-  var drop=el('div',{class:'drop'},[el('p',{text:p.rules?'Drop today’s file here, or choose it. CSV or Excel.':'Drop a known-good file here. The monitor learns its columns and proposes the checks.'}),el('div',{class:'row',style:'justify-content:center;margin-top:12px'},[el('button',{class:'btn',text:(r&&r.status!=='Passed'&&!r.resolved)?'Retry with a corrected file':'Choose file and run',disabled:!can('run'),onclick:function(){fi.click()}}),p.sample?el('button',{class:'btn g',text:'Run sample: good file',disabled:!can('run'),onclick:function(){runPipeline(p,sample(p.sample,false),'sample-good.csv',(r&&r.status!=='Passed'&&!r.resolved)?r.id:null)}}):null,p.sample?el('button',{class:'btn g',text:'Run sample: broken file',disabled:!can('run'),onclick:function(){runPipeline(p,sample(p.sample,true),'sample-broken.csv')}}):null]),fi]);
-  drop.addEventListener('dragover',function(e){e.preventDefault();drop.classList.add('over')});drop.addEventListener('dragleave',function(){drop.classList.remove('over')});
-  drop.addEventListener('drop',function(e){e.preventDefault();drop.classList.remove('over');if(!can('run'))return;var fl=e.dataTransfer.files[0];if(fl)readFile(fl,function(rows,name){runPipeline(p,rows,name,(r&&r.status!=='Passed'&&!r.resolved)?r.id:null)})});
-  left.appendChild(el('div',{class:'card'},[el('span',{class:'lab',text:'RUN'}),drop,el('p',{class:'note',style:'margin-top:10px',text:'Files are read in this browser only. Nothing is uploaded to a server.'})]));
-  /* last run */
-  if(r){var box=el('div',{class:'card'},[el('div',{class:'row',style:'justify-content:space-between'},[el('span',{class:'lab',style:'margin:0',text:'LAST RUN · '+fmt(r.ts)+' · '+r.file}),el('span',{class:'pill '+(r.status==='Passed'?'ok':r.status==='Failed'?'b':'w'),text:r.status})]),el('p',{style:'margin:10px 0',text:r.rows+' rows received · '+r.cleanRows+' clean · '+r.rejectedRows+' held back'})]);
-    if(!r.issues.length)box.appendChild(el('p',{class:'note',text:'Every check passed. The clean file is safe to send to '+p.dest+'.'}));
-    r.issues.forEach(function(x){box.appendChild(el('div',{class:'issue'},[el('div',{class:'row'},[el('span',{class:'pill '+(x.sev==='fail'?'b':'w'),text:x.sev==='fail'?'FAILURE':'WARNING'}),el('b',{text:x.msg})]),el('div',{class:'fix',text:'Likely fix: '+x.fix})]))});
+      var o=p||newPipe({});o.name=n;o.owner=f.owner.value.trim();o.source.label=f.src.value.trim()||'Source';o.dest.label=f.dst.value.trim()||'Destination';o.channel=f.channel.value;o.contact=f.contact.value.trim();o.every=Number(f.every.value)||0;
+      if(!p)ws.pipelines.push(o);log(p?'Pipeline edited':'Pipeline created','“'+n+'”');save();view.tab='extract';go('pipe',o.id)}}),el('button',{class:'btn g',text:'Cancel',onclick:function(){go(p?'pipe':'health',p&&p.id)}})])]))};
+
+function srcRows(p){return (mem[p.id]&&mem[p.id].src)||p.sampleRows||null}
+V.pipe=function(m){var p=pOf(view.id);if(!p){go('health');return}var rs=runsOf(p.id),r=rs[0],s=statusOf(p),ed=can('edit'),open=r&&r.status!=='Passed'&&!r.resolved;
+  m.appendChild(header(p.name,p.source.label+' → '+p.dest.label+(p.owner?' · owner: '+p.owner:''),[el('span',{class:'pill '+s.k,text:s.t}),ed?el('button',{class:'btn g',text:'Details',onclick:function(){go('edit',p.id)}}):null,ed?el('button',{class:'btn d',text:'Delete',onclick:function(){if(this.dataset.sure){ws.pipelines=ws.pipelines.filter(function(x){return x.id!==p.id});log('Pipeline deleted','“'+p.name+'”');save();go('health')}else{this.dataset.sure=1;this.textContent='Click again to delete'}}}):null]));
+  var fi=el('input',{type:'file',accept:'.csv,.xlsx,.xls,.txt,.json,.tsv',hidden:true,'aria-label':'Choose a data file',onchange:function(){if(fi.files[0])readFile(fi.files[0],function(rows,name){if(!rows.length){toast('That file is empty.');return}runPipeline(p,{rows:rows,name:name})})}});
+  var rb=el('div',{class:'runbar'},[el('b',{text:'Run this pipeline'}),el('span',{class:'note',text:r?'Last run '+fmt(r.ts)+' · '+r.rowsIn+' rows in, '+r.cleanRows+' delivered · '+r.ms+' ms':'Not run yet'}),el('span',{class:'sp'}),fi]);
+  if(p.source.type==='file'){rb.appendChild(el('button',{class:'btn',text:open?'Retry with a corrected file':'Choose file and run',disabled:!can('run'),onclick:function(){fi.click()}}));if(mem[p.id]&&mem[p.id].src)rb.appendChild(el('button',{class:'btn g',text:'Run again with the same file',disabled:!can('run'),onclick:function(){runPipeline(p)}}))}
+  else rb.appendChild(el('button',{class:'btn',text:open?'Retry now':'Run now',disabled:!can('run'),onclick:function(){runPipeline(p)}}));
+  if(p.sample){rb.appendChild(el('button',{class:'btn g',text:'Run sample: good file',disabled:!can('run'),onclick:function(){runPipeline(p,{rows:sample(p.sample,false),name:'sample-good.csv'})}}));rb.appendChild(el('button',{class:'btn g',text:'Run sample: broken file',disabled:!can('run'),onclick:function(){runPipeline(p,{rows:sample(p.sample,true),name:'sample-broken.csv'})}}))}
+  m.appendChild(rb);
+  var stepErr=r&&r.issues.some(function(x){return x.code==='STEP_ERROR'}),exErr=r&&r.issues.some(function(x){return x.code==='EXTRACT_FAILED'}),ldErr=r&&r.issues.some(function(x){return x.code==='LOAD_FAILED'});
+  var tabs=[['extract','1 Extract',p.source.type==='url'?'Web address':p.source.type==='paste'?'Pasted data':'File upload',exErr?'bad':r?'done':''],['transform','2 Transform',(p.steps||[]).length+' step'+((p.steps||[]).length===1?'':'s'),stepErr?'bad':r&&!exErr?'done':''],['check','3 Check',!r||exErr||stepErr?'Waiting':(r.issues.length?r.issues.length+' issue'+(r.issues.length>1?'s':''):'All passed'),!r||exErr||stepErr?'':r.status==='Passed'||ldErr?'done':r.status==='Failed'?'bad':'warn'],['load','4 Load',p.dest.type==='web'?'Web address':p.dest.type==='both'?'File and web address':p.dest.format+' file',ldErr?'bad':r&&r.load&&r.load.ok?'done':''],['monitor','5 Monitor',rs.length+' run'+(rs.length===1?'':'s'),open?'bad':rs.length?'done':'']];
+  m.appendChild(el('div',{class:'tabs',role:'tablist'},tabs.map(function(t){return el('button',{class:'tab '+t[3],role:'tab','aria-selected':view.tab===t[0]?'true':'false',onclick:function(){view.tab=t[0];render()}},[el('b',{text:t[1]}),el('span',{text:t[2]})])})));
+  var box=el('div',{class:'grid'});m.appendChild(box);(T[view.tab]||T.extract)(box,p,r,rs,ed)};
+
+var T={};
+T.extract=function(box,p,r,rs,ed){var S=p.source,sel=el('select',{disabled:!ed,onchange:function(){S.type=sel.value;if(S.type!=='file')delete p.sample;log('Source changed','“'+p.name+'”: '+sel.options[sel.selectedIndex].text);save();render()}},[['file','Upload a file (CSV, Excel, JSON)'],['url','Fetch from a web address'],['paste','Paste data']].map(function(o){return el('option',{value:o[0],text:o[1],selected:S.type===o[0]})}));
+  var c=el('div',{class:'card'},[el('span',{class:'lab',text:'WHERE THE DATA COMES FROM'}),el('label',{class:'f'},['SOURCE TYPE',sel])]);
+  if(S.type==='file'){var fi=el('input',{type:'file',accept:'.csv,.xlsx,.xls,.txt,.json,.tsv',hidden:true,'aria-label':'Choose a file to load',onchange:function(){if(fi.files[0])readFile(fi.files[0],function(rows,name){if(!rows.length){toast('That file is empty.');return}mem[p.id]={src:rows,name:name};p.sampleRows=rows.slice(0,60);log('File loaded','“'+p.name+'”: '+name+', '+(rows.length-1)+' rows');save();render();toast('File loaded. Build your steps in Transform, or run the pipeline.')})}});
+    var drop=el('div',{class:'drop',style:'margin-top:14px'},[el('p',{text:'Drop a CSV, Excel or JSON file here, or choose it.'}),el('div',{class:'row',style:'justify-content:center;margin-top:12px'},[el('button',{class:'btn',text:'Choose file',disabled:!can('run'),onclick:function(){fi.click()}})]),fi]);
+    drop.addEventListener('dragover',function(e){e.preventDefault();drop.classList.add('over')});drop.addEventListener('dragleave',function(){drop.classList.remove('over')});
+    drop.addEventListener('drop',function(e){e.preventDefault();drop.classList.remove('over');if(!can('run'))return;var fl=e.dataTransfer.files[0];if(fl){fi.files=e.dataTransfer.files;fi.dispatchEvent(new Event('change'))}});c.appendChild(drop);
+    c.appendChild(el('p',{class:'note',style:'margin-top:10px',text:'Files are read in this browser only. Nothing is uploaded to a server.'}))}
+  if(S.type==='url'){var u=el('input',{type:'url',placeholder:'https://example.com/export.csv',value:S.url||'',disabled:!ed,onchange:function(){S.url=u.value.trim();log('Source changed','“'+p.name+'”: address set');save()}});
+    var mins=el('input',{type:'number',min:1,value:p.schedule.minutes,disabled:!ed,onchange:function(){p.schedule.minutes=Math.max(1,Number(mins.value)||60);save()}}),on=el('input',{type:'checkbox',checked:p.schedule.on,disabled:!ed,onchange:function(){p.schedule.on=on.checked;log('Schedule '+(on.checked?'on':'off'),'“'+p.name+'”: every '+p.schedule.minutes+' minutes');save();render()}});
+    c.appendChild(el('div',{style:'margin-top:14px'},[el('label',{class:'f'},['WEB ADDRESS OF A CSV OR JSON FEED',u])]));
+    c.appendChild(el('div',{class:'row',style:'margin-top:12px'},[el('button',{class:'btn g',text:'Test the address',onclick:function(){S.url=u.value.trim();extract(p).then(function(x){p.sampleRows=x.rows.slice(0,60);save();render();toast('It works: '+(x.rows.length-1)+' rows read.')},function(e){toast(e.message)})}})]));
+    c.appendChild(el('div',{style:'margin-top:16px;padding-top:16px;border-top:1px solid var(--line)'},[el('span',{class:'lab',text:'SCHEDULE'}),el('label',{style:'display:flex;gap:8px;align-items:center;font-size:14px;margin-bottom:10px'},[on,'Run automatically while this page is open']),el('label',{class:'f',style:'max-width:220px'},['EVERY (MINUTES)',mins]),el('p',{class:'note',style:'margin-top:10px',text:'The schedule runs only while Pipeline Studio is open in a browser tab. The address must allow access from other websites. Scheduled runs send to a destination address but do not download files.'})]))}
+  if(S.type==='paste'){var ta=el('textarea',{placeholder:'Paste rows copied from a spreadsheet, or CSV, or JSON','aria-label':'Pasted data',disabled:!ed});ta.value=S.text||'';ta.addEventListener('change',function(){S.text=ta.value;try{var rows=parseText(S.text);p.sampleRows=rows.slice(0,60);toast(rows.length?(rows.length-1)+' rows read.':'Nothing to read yet.')}catch(e){toast('That text could not be read: '+e.message)}save();render()});c.appendChild(el('div',{style:'margin-top:14px'},[ta]))}
+  box.appendChild(c);var rows=srcRows(p);
+  box.appendChild(el('div',{class:'card'},[el('span',{class:'lab',text:'SOURCE PREVIEW'+(rows?' · '+(mem[p.id]&&mem[p.id].src?(rows.length-1)+' ROWS LOADED':'FIRST ROWS FROM THE LAST LOAD'):'')}),rows&&rows.length?dataTable(rows,8):el('p',{class:'note',text:'Load data to see it here.'})]))};
+
+T.transform=function(box,p,r,rs,ed){var rows=srcRows(p),steps=p.steps=p.steps||[];
+  if(!rows||!rows.length){box.appendChild(el('div',{class:'card empty'},[el('h2',{text:'Load some data first'}),el('p',{text:'Transform steps are built against real columns. Load a file, test the address or paste data in the Extract tab.'}),el('div',{class:'row',style:'justify-content:center;margin-top:16px'},[el('button',{class:'btn',text:'Go to Extract',onclick:function(){view.tab='extract';render()}})])]));return}
+  var res=applySteps(rows,steps),list=el('div',{class:'card'},[el('span',{class:'lab',text:'STEPS, APPLIED IN ORDER'})]);
+  if(!steps.length)list.appendChild(el('p',{class:'note',text:'No steps yet. The data passes through unchanged. Add a step below.'}));
+  steps.forEach(function(s,i){var tr=res.trace[i],mv=function(d){return function(){var j=i+d;if(j<0||j>=steps.length)return;var x=steps[i];steps[i]=steps[j];steps[j]=x;log('Steps reordered','“'+p.name+'”');save();render()}};
+    list.appendChild(el('div',{class:'step'+(tr&&tr.error?' err':'')},[el('span',{class:'n',text:String(i+1)}),el('div',null,[el('b',{text:OPS[s.op].label}),el('small',{text:OPS[s.op].sum(s)+(tr?(tr.error?' · Problem: '+tr.error:' · '+tr.rowsIn+' → '+tr.rowsOut+' rows'):' · not reached')})]),
+      ed?el('div',{class:'row'},[el('button',{class:'btn g s','aria-label':'Move step '+(i+1)+' up',text:'↑',disabled:i===0,onclick:mv(-1)}),el('button',{class:'btn g s','aria-label':'Move step '+(i+1)+' down',text:'↓',disabled:i===steps.length-1,onclick:mv(1)}),el('button',{class:'btn d s',text:'Remove',onclick:function(){steps.splice(i,1);log('Step removed','“'+p.name+'”: '+OPS[s.op].label);save();render()}})]):null]))});
+  if(ed){var cur=res.error?applySteps(rows,steps,res.errStep).rows[0]:res.rows[0],draft={op:''},form=el('div',{class:'form',style:'margin-top:12px'}),opSel=el('select',{'aria-label':'Step type'},[el('option',{value:'',text:'Choose a step to add…'})].concat(Object.keys(OPS).map(function(k){return el('option',{value:k,text:OPS[k].label})})));
+    var draw=function(){form.innerHTML='';if(!draft.op)return;OPS[draft.op].f.forEach(function(f){var k=f[0],inp;
+        if(draft.op==='compute'&&((k==='right'&&draft.rtype==='another column')||(k==='rcol'&&draft.rtype!=='another column')))return;
+        if(f[2]==='col'){inp=el('select',null,cur.map(function(c){return el('option',{text:c})}));if(draft[k]==null)draft[k]=cur[0];inp.value=draft[k];inp.addEventListener('change',function(){draft[k]=inp.value})}
+        else if(f[2]==='sel'){inp=el('select',null,f[3].map(function(c){return el('option',{text:c})}));if(draft[k]==null)draft[k]=f[3][0];inp.value=draft[k];inp.addEventListener('change',function(){draft[k]=inp.value;if(k==='rtype')draw()})}
+        else if(f[2]==='cols'){if(!draft[k])draft[k]=cur.slice();inp=el('div',{class:'chk'},cur.map(function(c){return el('label',null,[el('input',{type:'checkbox',checked:draft[k].indexOf(c)>=0,onchange:function(){if(this.checked)draft[k].push(c);else draft[k]=draft[k].filter(function(x){return x!==c});draft[k]=cur.filter(function(x){return draft[k].indexOf(x)>=0})}}),c])}));form.appendChild(el('div',{style:'grid-column:1/-1'},[el('span',{class:'lab',text:f[1].toUpperCase()}),inp]));return}
+        else if(f[2]==='ref'){var rf=el('input',{type:'file',accept:'.csv,.xlsx,.xls,.json',hidden:true,'aria-label':'Choose a reference table',onchange:function(){if(rf.files[0])readFile(rf.files[0],function(rr){if(rr.length<2){toast('The reference table needs a header and at least one row.');return}if(rr.length>3001){toast('Reference tables are limited to 3,000 rows in the browser version.');return}draft.ref={h:rr[0].map(String),d:rr.slice(1)};draw()})}});
+          form.appendChild(el('div',{style:'grid-column:1/-1'},[el('span',{class:'lab',text:'REFERENCE TABLE'}),el('div',{class:'row'},[el('button',{class:'btn g',type:'button',text:draft.ref?'Replace the table':'Choose a file',onclick:function(){rf.click()}}),el('span',{class:'note',text:draft.ref?draft.ref.d.length+' rows. Matching on its first column, “'+draft.ref.h[0]+'”; adding '+draft.ref.h.slice(1).join(', ')+'.':'Its first column is matched; the other columns are added to your data.'})]),rf]));return}
+        else{inp=el('input',{type:'text',value:draft[k]||''});inp.addEventListener('input',function(){draft[k]=inp.value})}
+        form.appendChild(el('label',{class:'f'},[f[1].toUpperCase(),inp]))});
+      form.appendChild(el('div',{style:'grid-column:1/-1'},[el('button',{class:'btn',text:'Add this step',onclick:function(){var t=applySteps(rows,steps.concat([draft]));if(t.error){toast(t.error);return}steps.push(draft);log('Step added','“'+p.name+'”: '+OPS[draft.op].label+' ('+OPS[draft.op].sum(draft)+')');save();render()}})]))};
+    opSel.addEventListener('change',function(){draft={op:opSel.value};draw()});
+    list.appendChild(el('div',{style:'margin-top:16px;padding-top:16px;border-top:1px solid var(--line)'},[el('span',{class:'lab',text:'ADD A STEP'}),opSel,form]))}
+  box.appendChild(list);
+  box.appendChild(el('div',{class:'card'},[el('div',{class:'row',style:'justify-content:space-between'},[el('span',{class:'lab',text:'OUTPUT PREVIEW · '+(rows.length-1)+' ROWS IN, '+(res.rows.length-1)+' OUT'+(mem[p.id]&&mem[p.id].src?'':' (FIRST ROWS ONLY)')}),res.error?el('span',{class:'pill b',text:'A step has a problem'}):null]),res.error?el('p',{style:'color:var(--bad);margin-bottom:10px',text:res.error}):null,dataTable(res.rows,12)]))};
+
+T.check=function(box,p,r,rs,ed){
+  if(r){var c=el('div',{class:'card'},[el('div',{class:'row',style:'justify-content:space-between'},[el('span',{class:'lab',style:'margin:0',text:'LAST RUN · '+fmt(r.ts)+(r.file?' · '+r.file:'')+(r.auto?' · SCHEDULED':'')}),el('span',{class:'pill '+(r.status==='Passed'?'ok':r.status==='Failed'?'b':'w'),text:r.status})]),el('p',{style:'margin:10px 0',text:r.rowsIn+' rows extracted · '+r.rows+' after transform · '+r.cleanRows+' clean · '+r.rejectedRows+' held back'})]);
+    if(!r.issues.length)c.appendChild(el('p',{class:'note',text:'Every check passed.'}));
+    r.issues.forEach(function(x){c.appendChild(el('div',{class:'issue'},[el('div',{class:'row'},[el('span',{class:'pill '+(x.sev==='fail'?'b':'w'),text:x.sev==='fail'?'FAILURE':'WARNING'}),el('b',{text:x.msg})]),el('div',{class:'fix',text:'Likely fix: '+x.fix})]))});
     var acts=el('div',{class:'row',style:'margin-top:14px'});
-    if(mem[r.id]){acts.appendChild(el('button',{class:'btn',text:'Download clean file',disabled:r.status==='Failed'&&!r.resolved,onclick:function(){download(p.name.replace(/\W+/g,'-')+'-clean.csv',toCSV(mem[r.id].clean));log('Clean file downloaded','“'+p.name+'”: '+r.cleanRows+' rows');save()}}));
-      if(r.rejectedRows)acts.appendChild(el('button',{class:'btn g',text:'Download held-back rows',onclick:function(){download(p.name.replace(/\W+/g,'-')+'-held-back.csv',toCSV(mem[r.id].rejected))}}));
-      if(can('edit')&&r.issues.some(function(x){return x.code==='COLUMNS_MISSING'||x.code==='COLUMNS_NEW'})&&mem[r.id].header)acts.appendChild(el('button',{class:'btn g',text:'Accept the new column layout',onclick:function(){var np=profile([mem[r.id].header].concat(mem[r.id].clean.slice(1)));p.rules.cols=mem[r.id].header.slice();p.rules.required=p.rules.required.filter(function(c){return p.rules.cols.indexOf(c)>=0});p.rules.numeric=p.rules.numeric.filter(function(c){return p.rules.cols.indexOf(c)>=0});if(p.rules.cols.indexOf(p.rules.key)<0)p.rules.key=np.key;log('Rules changed','“'+p.name+'”: new column layout accepted');save();render();toast('Layout accepted. Run the file again to re-check it.')}}))}
-    else acts.appendChild(el('span',{class:'note',text:'Downloads are available until the page is reloaded. Run the file again to get them back.'}));
-    box.appendChild(acts);
+    if(mem[r.id]){if(r.rejectedRows)acts.appendChild(el('button',{class:'btn g',text:'Download held-back rows',onclick:function(){exportRows(p.name.replace(/\W+/g,'-').toLowerCase()+'-held-back',mem[r.id].rejected,'CSV')}}));
+      if(ed&&r.issues.some(function(x){return x.code==='COLUMNS_MISSING'||x.code==='COLUMNS_NEW'}))acts.appendChild(el('button',{class:'btn g',text:'Accept the new column layout',onclick:function(){var h=mem[r.id].header,np=profile(mem[r.id].clean);p.rules.cols=h.slice();p.rules.required=p.rules.required.filter(function(c){return h.indexOf(c)>=0});p.rules.numeric=p.rules.numeric.filter(function(c){return h.indexOf(c)>=0});if(h.indexOf(p.rules.key)<0)p.rules.key=np.key;log('Checks changed','“'+p.name+'”: new column layout accepted');save();render();toast('Layout accepted. Run again to re-check.')}}))}
+    c.appendChild(acts);
     if(r.status!=='Passed'&&!r.resolved){var note=el('input',{type:'text',placeholder:'What was done to fix it?','aria-label':'Resolution note'});
-      box.appendChild(el('div',{style:'margin-top:16px;padding-top:16px;border-top:1px solid var(--line)'},[el('span',{class:'lab',text:'RESOLVE'}),el('div',{class:'row'},[el('div',{style:'flex:1;min-width:200px'},[note]),el('button',{class:'btn',text:'Mark resolved',disabled:!can('resolve'),onclick:function(){if(!note.value.trim()){note.focus();toast('Add a short note so the audit trail shows what was done.');return}r.resolved={by:ws.user||'Unnamed',ts:Date.now(),note:note.value.trim()};log('Resolved','“'+p.name+'”: '+r.resolved.note);save();render()}})]),el('div',{class:'row',style:'margin-top:12px'},alertLinks(r))]))}
-    else if(r.resolved)box.appendChild(el('p',{class:'note',style:'margin-top:12px',text:'Resolved by '+r.resolved.by+' on '+fmt(r.resolved.ts)+': '+r.resolved.note}));
-    left.appendChild(box)}
-  /* rules */
-  if(p.rules){var R=p.rules,ed=can('edit'),rc=el('div',{class:'card'},[el('span',{class:'lab',text:'CHECKS FOR THIS PIPELINE'})]);
-    var group=function(title,list,multi){rc.appendChild(el('p',{style:'font-weight:600;margin:12px 0 8px',text:title}));rc.appendChild(el('div',{class:'chk'},R.cols.map(function(c){var on=multi?R[list].indexOf(c)>=0:R[list]===c;return el('label',null,[el('input',{type:multi?'checkbox':'radio',name:list,checked:on,disabled:!ed,onchange:function(){if(multi){if(this.checked)R[list].push(c);else R[list]=R[list].filter(function(x){return x!==c})}else R[list]=c;log('Rules changed','“'+p.name+'”: '+title.toLowerCase());save()}}),c])})))};
-    group('Must never be blank','required',true);group('Must be a number','numeric',true);group('Unique key (no duplicates)','key',false);
-    var mn=el('input',{type:'number',value:R.minRows,min:0,disabled:!ed,onchange:function(){R.minRows=Number(this.value)||0;log('Rules changed','“'+p.name+'”: minimum rows '+R.minRows);save()}}),md=el('input',{type:'number',value:R.maxDropPct,min:0,max:100,disabled:!ed,onchange:function(){R.maxDropPct=Number(this.value)||0;log('Rules changed','“'+p.name+'”: volume drop limit '+R.maxDropPct+'%');save()}});
-    rc.appendChild(el('div',{class:'form',style:'margin-top:16px'},[el('label',{class:'f'},['MINIMUM ROWS',mn]),el('label',{class:'f'},['WARN IF ROWS FALL BY MORE THAN (%)',md])]));
-    rc.appendChild(el('label',{style:'display:flex;gap:8px;align-items:center;margin-top:14px;font-size:14px'},[el('input',{type:'checkbox',checked:R.allowNegative,disabled:!ed,onchange:function(){R.allowNegative=this.checked;log('Rules changed','“'+p.name+'”: negatives '+(this.checked?'allowed':'held back'));save()}}),'Allow negative numbers']));
-    if(!ed)rc.appendChild(el('p',{class:'note',style:'margin-top:10px',text:'Only an Admin can change the checks.'}));right.appendChild(rc)}
-  var hist=el('div',{class:'card'},[el('span',{class:'lab',text:'RUN HISTORY'})]);if(!rs.length)hist.appendChild(el('p',{class:'note',text:'No runs yet.'}));
-  rs.slice(0,8).forEach(function(x){hist.appendChild(el('div',{class:'row',style:'justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)'},[el('span',{text:fmt(x.ts)+' · '+x.rows+' rows'+(x.retryOf?' · retry':'')}),el('span',{class:'pill '+(x.status==='Passed'?'ok':x.resolved?'n':x.status==='Failed'?'b':'w'),text:x.resolved?x.status+', resolved':x.status})]))});
-  right.appendChild(hist);m.appendChild(el('div',{class:'grid g31'},[left,right]))};
+      c.appendChild(el('div',{style:'margin-top:16px;padding-top:16px;border-top:1px solid var(--line)'},[el('span',{class:'lab',text:'RESOLVE'}),el('div',{class:'row'},[el('div',{style:'flex:1;min-width:200px'},[note]),el('button',{class:'btn',text:'Mark resolved',disabled:!can('resolve'),onclick:function(){if(!note.value.trim()){note.focus();toast('Add a short note so the audit trail shows what was done.');return}r.resolved={by:ws.user||'Unnamed',ts:Date.now(),note:note.value.trim()};log('Resolved','“'+p.name+'”: '+r.resolved.note);save();render()}})]),el('div',{class:'row',style:'margin-top:12px'},alertLinks(r))]))}
+    else if(r.resolved)c.appendChild(el('p',{class:'note',style:'margin-top:12px',text:'Resolved by '+r.resolved.by+' on '+fmt(r.resolved.ts)+': '+r.resolved.note}));
+    box.appendChild(c)}
+  if(!p.rules){box.appendChild(el('div',{class:'card'},[el('span',{class:'lab',text:'CHECKS'}),el('p',{class:'note',text:'The checks are learned from the output of the first run. Run the pipeline once with a known-good file.'})]));return}
+  var R=p.rules,rc=el('div',{class:'card'},[el('div',{class:'row',style:'justify-content:space-between'},[el('span',{class:'lab',style:'margin:0',text:'CHECKS ON THE OUTPUT'}),ed?el('button',{class:'btn g s',text:'Re-learn from current data',onclick:function(){var rows=srcRows(p);if(!rows){toast('Load data in the Extract tab first.');return}var t=applySteps(rows,p.steps||[]);if(t.error){toast(t.error);return}p.rules=profile(t.rows);log('Checks re-learned','“'+p.name+'”: '+p.rules.cols.length+' columns');save();render();toast('Checks re-learned from the current output.')}}):null])]);
+  var group=function(title,list,multi){rc.appendChild(el('p',{style:'font-weight:600;margin:14px 0 8px',text:title}));rc.appendChild(el('div',{class:'chk'},R.cols.map(function(c){var on=multi?R[list].indexOf(c)>=0:R[list]===c;return el('label',null,[el('input',{type:multi?'checkbox':'radio',name:list,checked:on,disabled:!ed,onchange:function(){if(multi){if(this.checked)R[list].push(c);else R[list]=R[list].filter(function(x){return x!==c})}else R[list]=c;log('Checks changed','“'+p.name+'”: '+title.toLowerCase());save()}}),c])})))};
+  group('Must never be blank','required',true);group('Must be a number','numeric',true);group('Unique key (no duplicates)','key',false);
+  var mn=el('input',{type:'number',value:R.minRows,min:0,disabled:!ed,onchange:function(){R.minRows=Number(this.value)||0;log('Checks changed','“'+p.name+'”: minimum rows '+R.minRows);save()}}),md=el('input',{type:'number',value:R.maxDropPct,min:0,max:100,disabled:!ed,onchange:function(){R.maxDropPct=Number(this.value)||0;log('Checks changed','“'+p.name+'”: volume drop limit '+R.maxDropPct+'%');save()}});
+  rc.appendChild(el('div',{class:'form',style:'margin-top:16px'},[el('label',{class:'f'},['MINIMUM ROWS',mn]),el('label',{class:'f'},['WARN IF ROWS FALL BY MORE THAN (%)',md])]));
+  rc.appendChild(el('label',{style:'display:flex;gap:8px;align-items:center;margin-top:14px;font-size:14px'},[el('input',{type:'checkbox',checked:R.allowNegative,disabled:!ed,onchange:function(){R.allowNegative=this.checked;log('Checks changed','“'+p.name+'”: negatives '+(this.checked?'allowed':'held back'));save()}}),'Allow negative numbers']));
+  box.appendChild(rc)};
+
+T.load=function(box,p,r,rs,ed){var D=p.dest,ty=el('select',{disabled:!ed,onchange:function(){D.type=ty.value;log('Destination changed','“'+p.name+'”: '+ty.options[ty.selectedIndex].text);save();render()}},[['file','Download a file'],['web','Send to a web address'],['both','Both']].map(function(o){return el('option',{value:o[0],text:o[1],selected:D.type===o[0]})}));
+  var c=el('div',{class:'card'},[el('span',{class:'lab',text:'WHERE THE CLEAN DATA GOES'}),el('div',{class:'form'},[el('label',{class:'f'},['DESTINATION TYPE',ty])])]),f=c.lastChild;
+  if(D.type!=='web'){var fm=el('select',{disabled:!ed,onchange:function(){D.format=fm.value;save();render()}},['CSV','Excel','JSON'].map(function(o){return el('option',{text:o,selected:D.format===o})}));f.appendChild(el('label',{class:'f'},['FILE FORMAT',fm]))}
+  if(D.type!=='file'){var u=el('input',{type:'url',placeholder:'https://hooks.example.com/receive',value:D.url||'',disabled:!ed,onchange:function(){D.url=u.value.trim();log('Destination changed','“'+p.name+'”: address set');save()}});
+    c.appendChild(el('div',{style:'margin-top:14px'},[el('label',{class:'f'},['DESTINATION ADDRESS (RECEIVES THE ROWS AS JSON)',u]),el('p',{class:'note',style:'margin-top:8px',text:'Works with anything that accepts a web request, such as an automation tool’s webhook, a Google Sheets script or your own system. The clean rows are sent in one request.'})]))}
+  c.appendChild(el('p',{class:'note',style:'margin-top:14px',text:'Only rows that pass the checks are loaded. A run that fails its checks loads nothing.'}));box.appendChild(c);
+  if(r){var lc=el('div',{class:'card'},[el('span',{class:'lab',text:'LAST LOAD'}),el('div',{class:'row'},[el('span',{class:'pill '+(r.load&&r.load.ok?'ok':'b'),text:r.load&&r.load.ok?'Loaded':'Not loaded'}),el('span',{text:r.load?r.load.msg:'The run stopped before loading.'})])]);
+    if(mem[r.id]&&r.status!=='Failed')lc.appendChild(el('div',{class:'row',style:'margin-top:14px'},['CSV','Excel','JSON'].map(function(fm){return el('button',{class:'btn g',text:'Download clean data as '+fm,onclick:function(){exportRows(p.name.replace(/\W+/g,'-').toLowerCase()+'-clean',mem[r.id].clean,fm);log('Clean data downloaded','“'+p.name+'”: '+r.cleanRows+' rows as '+fm);save()}})})));
+    else if(r.status!=='Failed')lc.appendChild(el('p',{class:'note',style:'margin-top:10px',text:'Downloads are available until the page is reloaded. Run again to get them back.'}));
+    if(mem[r.id])lc.appendChild(el('div',{style:'margin-top:14px'},[dataTable(mem[r.id].clean,6)]));box.appendChild(lc)}};
+
+T.monitor=function(box,p,r,rs){if(!rs.length){box.appendChild(el('div',{class:'card empty'},[el('h2',{text:'No runs yet'}),el('p',{text:'Run the pipeline to start its history.'})]));return}
+  var last=rs.slice(0,30).reverse(),ok=rs.filter(function(x){return x.status==='Passed'}).length,avg=Math.round(rs.reduce(function(a,x){return a+x.ms},0)/rs.length);
+  box.appendChild(el('div',{class:'grid g4'},[['Runs',rs.length],['Passed',Math.round(ok/rs.length*100)+'%'],['Average run time',avg+' ms'],['Rows delivered',rs.reduce(function(a,x){return a+(x.cleanRows||0)},0).toLocaleString('en-IN')]].map(function(k){return el('div',{class:'card kpi'},[el('b',{text:String(k[1])}),el('span',{text:k[0]})])})));
+  box.appendChild(el('div',{class:'grid g2'},[el('div',{class:'card'},[el('span',{class:'lab',text:'ROWS DELIVERED PER RUN'}),spark(last.map(function(x){return x.cleanRows||0}),'#0A8F5B')]),el('div',{class:'card'},[el('span',{class:'lab',text:'RUN TIME PER RUN (MS)'}),spark(last.map(function(x){return x.ms}),'#0B1410')])]));
+  var t=el('table',null,[el('tr',null,['When','By','Rows in','Rows out','Held back','Time','Load','Status'].map(function(h){return el('th',{text:h})}))]);
+  rs.slice(0,40).forEach(function(x){t.appendChild(el('tr',null,[el('td',{text:fmt(x.ts),style:'white-space:nowrap'}),el('td',{text:x.by+(x.retryOf?' (retry)':'')}),el('td',{text:String(x.rowsIn)}),el('td',{text:String(x.cleanRows)}),el('td',{text:String(x.rejectedRows)}),el('td',{text:x.ms+' ms'}),el('td',{text:x.load&&x.load.ok?'Yes':'No'}),el('td',null,[el('span',{class:'pill '+(x.status==='Passed'?'ok':x.resolved?'n':x.status==='Failed'?'b':'w'),text:x.resolved?x.status+', resolved':x.status})])]))});
+  box.appendChild(el('div',{class:'card'},[el('span',{class:'lab',text:'RUN HISTORY'}),el('div',{class:'tw'},[t])]))};
+
 V.alerts=function(m){var a=openAlerts();m.appendChild(header('Alerts','Open failures and warnings. Each alert names the likely cause and can be sent to the owner from your own WhatsApp or email.'));
   if(!a.length){m.appendChild(el('div',{class:'card empty'},[el('h2',{text:'No open alerts'}),el('p',{text:'Failed or warning runs appear here until someone resolves them.'})]));return}
-  a.forEach(function(r){var p=pOf(r.pid);m.appendChild(el('div',{class:'card',style:'margin-bottom:16px'},[el('div',{class:'row',style:'justify-content:space-between'},[el('b',{text:p.name}),el('span',{class:'pill '+(r.status==='Failed'?'b':'w'),text:r.status+' · '+fmt(r.ts)})]),el('pre',{class:'msg',text:alertText(r)}),el('div',{class:'row'},alertLinks(r).concat([el('button',{class:'btn',text:'Open pipeline',onclick:function(){go('pipe',p.id)}})]))]))})};
+  a.forEach(function(r){var p=pOf(r.pid);m.appendChild(el('div',{class:'card',style:'margin-bottom:16px'},[el('div',{class:'row',style:'justify-content:space-between'},[el('b',{text:p.name}),el('span',{class:'pill '+(r.status==='Failed'?'b':'w'),text:r.status+' · '+fmt(r.ts)})]),el('pre',{class:'msg',text:alertText(r)}),el('div',{class:'row'},alertLinks(r).concat([el('button',{class:'btn',text:'Open pipeline',onclick:function(){view.tab='check';go('pipe',p.id)}})]))]))})};
 V.audit=function(m){var q=el('input',{type:'text',placeholder:'Search the audit trail','aria-label':'Search the audit trail'}),body=el('div',{class:'tw'});
-  m.appendChild(header('Audit trail','Every run, retry, rule change and resolution, with who did it and when.',[el('button',{class:'btn g',text:'Export as CSV',onclick:function(){download('pipeline-audit-trail.csv',toCSV([['Time','Person','Role','Action','Detail']].concat(ws.audit.map(function(a){return [new Date(a.ts).toISOString(),a.by,a.role,a.act,a.detail]}))))}})]));
+  m.appendChild(header('Audit trail','Every run, retry, step change, check change and resolution, with who did it and when.',[el('button',{class:'btn g',text:'Export as CSV',onclick:function(){exportRows('pipeline-audit-trail',[['Time','Person','Role','Action','Detail']].concat(ws.audit.map(function(a){return [new Date(a.ts).toISOString(),a.by,a.role,a.act,a.detail]})),'CSV')}})]));
   var draw=function(){var v=q.value.toLowerCase(),t=el('table',null,[el('tr',null,['Time','Person','Action','Detail'].map(function(h){return el('th',{text:h})}))]),list=ws.audit.filter(function(a){return !v||(a.by+' '+a.act+' '+a.detail).toLowerCase().indexOf(v)>=0});
     list.slice(0,300).forEach(function(a){t.appendChild(el('tr',null,[el('td',{text:fmt(a.ts),style:'white-space:nowrap'}),el('td',{text:a.by+' ('+a.role+')'}),el('td',null,[el('span',{class:'pill',text:a.act})]),el('td',{text:a.detail})]))});
     body.innerHTML='';body.appendChild(list.length?t:el('p',{class:'note',style:'padding:20px',text:ws.audit.length?'No entries match.':'Nothing recorded yet.'}))};
   q.addEventListener('input',draw);m.appendChild(el('div',{class:'card'},[q,el('div',{style:'height:12px'}),body]));draw()};
-V.settings=function(m){var fi=el('input',{type:'file',accept:'.json',hidden:true,'aria-label':'Choose a backup file',onchange:function(){var fr=new FileReader();fr.onload=function(){try{var d=JSON.parse(fr.result);if(!d.pipelines)throw 0;ws=d;mem={};log('Backup restored',d.pipelines.length+' pipelines');save();go('health');toast('Backup restored.')}catch(e){toast('That file is not a Pipeline Monitor backup.')}};if(fi.files[0])fr.readAsText(fi.files[0])}});
-  m.appendChild(header('Settings','Your pipelines, checks and audit trail are saved in this browser on this device.'));
-  m.appendChild(el('div',{class:'grid g2'},[el('div',{class:'card'},[el('span',{class:'lab',text:'BACKUP'}),el('p',{class:'note',style:'margin-bottom:14px',text:'Export a backup to move your workspace to another computer or keep a copy.'}),el('div',{class:'row'},[el('button',{class:'btn',text:'Export backup',onclick:function(){var a=el('a',{href:URL.createObjectURL(new Blob([JSON.stringify(ws)],{type:'application/json'})),download:'pipeline-monitor-backup.json'});document.body.appendChild(a);a.click();a.remove()}}),el('button',{class:'btn g',text:'Restore backup',disabled:!can('edit'),onclick:function(){fi.click()}}),fi])]),
-    el('div',{class:'card'},[el('span',{class:'lab',text:'WORKSPACE'}),el('p',{class:'note',style:'margin-bottom:14px',text:'Load three sample pipelines to try the tool, or clear everything and start again.'}),el('div',{class:'row'},[el('button',{class:'btn g',text:'Load sample workspace',disabled:!can('edit'),onclick:loadSample}),el('button',{class:'btn d',text:'Clear everything',disabled:!can('edit'),onclick:function(){if(this.dataset.sure){ws.pipelines=[];ws.runs=[];ws.audit=[];mem={};save();go('health')}else{this.dataset.sure=1;this.textContent='Click again to clear'}}})])]),
-    el('div',{class:'card',style:'grid-column:1/-1'},[el('span',{class:'lab',text:'WHAT THIS VERSION DOES AND DOES NOT DO'}),el('p',{class:'note',text:'This browser version checks files you upload, keeps the audit trail on this device and prepares alerts for you to send. It does not connect to systems on its own, run on a schedule in the background, or send alerts by itself, and the role switch is a demonstration, not a security control. The managed version from Globriddge adds direct connections, scheduled runs, automatic WhatsApp and email alerts, sign-in for each person and a shared database.'})])]))};
+V.settings=function(m){var fi=el('input',{type:'file',accept:'.json',hidden:true,'aria-label':'Choose a backup file',onchange:function(){var fr=new FileReader();fr.onload=function(){try{var d=JSON.parse(fr.result);if(!d.pipelines)throw 0;ws=d;mem={};log('Backup restored',d.pipelines.length+' pipelines');save();go('health');toast('Backup restored.')}catch(e){toast('That file is not a Pipeline Studio backup.')}};if(fi.files[0])fr.readAsText(fi.files[0])}});
+  m.appendChild(header('Settings','Your pipelines, steps, checks and audit trail are saved in this browser on this device.'));
+  m.appendChild(el('div',{class:'grid g2'},[el('div',{class:'card'},[el('span',{class:'lab',text:'BACKUP'}),el('p',{class:'note',style:'margin-bottom:14px',text:'Export a backup to move your workspace to another computer or keep a copy.'}),el('div',{class:'row'},[el('button',{class:'btn',text:'Export backup',onclick:function(){dl('pipeline-studio-backup.json',new Blob([JSON.stringify(ws)],{type:'application/json'}))}}),el('button',{class:'btn g',text:'Restore backup',disabled:!can('edit'),onclick:function(){fi.click()}}),fi])]),
+    el('div',{class:'card'},[el('span',{class:'lab',text:'WORKSPACE'}),el('p',{class:'note',style:'margin-bottom:14px',text:'Load four sample pipelines to try the tool, or clear everything and start again.'}),el('div',{class:'row'},[el('button',{class:'btn g',text:'Load sample workspace',disabled:!can('edit'),onclick:loadSample}),el('button',{class:'btn d',text:'Clear everything',disabled:!can('edit'),onclick:function(){if(this.dataset.sure){ws.pipelines=[];ws.runs=[];ws.audit=[];mem={};save();go('health')}else{this.dataset.sure=1;this.textContent='Click again to clear'}}})])]),
+    el('div',{class:'card',style:'grid-column:1/-1'},[el('span',{class:'lab',text:'WHAT THIS VERSION DOES AND DOES NOT DO'}),el('p',{class:'note',text:'This browser version extracts from files, pasted data and web addresses that allow browser access; transforms with fifteen kinds of step; checks the output; loads to a file or a web address; and keeps monitoring history and the audit trail on this device. Schedules run only while the page is open. It does not connect to databases or business systems directly, run in the background, or send alerts by itself, and the role switch is a demonstration, not a security control. The managed version from Globriddge adds direct connectors, background scheduling, automatic WhatsApp and email alerts, sign-in for each person and a shared database.'})])]))};
 function render(){var n=$('#nav');n.innerHTML='';var a=openAlerts().length;
-  [['health','Health'],['alerts','Alerts'],['audit','Audit trail'],['settings','Settings']].forEach(function(x){n.appendChild(el('button',{'aria-current':(view.name===x[0]||(x[0]==='health'&&(view.name==='pipe'||view.name==='edit')))?'page':false,onclick:function(){go(x[0])}},[x[1],x[0]==='alerts'&&a?el('span',{class:'cnt',text:String(a)}):null]))});
-  var m=$('#view');m.innerHTML='';(V[view.name]||V.health)(m);window.scrollTo(0,0)}
+  [['health','Monitoring'],['alerts','Alerts'],['audit','Audit trail'],['settings','Settings']].forEach(function(x){n.appendChild(el('button',{'aria-current':(view.name===x[0]||(x[0]==='health'&&(view.name==='pipe'||view.name==='edit')))?'page':false,onclick:function(){go(x[0])}},[x[1],x[0]==='alerts'&&a?el('span',{class:'cnt',text:String(a)}):null]))});
+  var m=$('#view'),y=window.scrollY,same=render.last===view.name+view.id;m.innerHTML='';(V[view.name]||V.health)(m);window.scrollTo(0,same?y:0);render.last=view.name+view.id}
 load();
 var un=$('#u-name'),ur=$('#u-role');un.value=ws.user||'';ur.value=ws.role||'Admin';
 un.addEventListener('change',function(){ws.user=un.value.trim();save()});
