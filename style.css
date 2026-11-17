@@ -1,7 +1,7 @@
 @font-face{font-family:'Funnel Display';src:url(fonts/funnel-display-latin-wght-normal.woff2) format('woff2');font-weight:300 800;font-style:normal;font-display:swap}
 @font-face{font-family:'Geist';src:url(fonts/geist-latin-wght-normal.woff2) format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:'Geist Mono';src:url(fonts/geist-mono-latin-wght-normal.woff2) format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
-/* Globriddge Technologies. Concept: a bright, quiet page with one dark window onto the Earth. White ground, near-black type, one emerald, and a lime highlighter used like a marker pen. */
+/* Globriddge. Concept: a bright, quiet page with one dark window onto the Earth. White ground, near-black type, one emerald, and a lime highlighter used like a marker pen. */
 :root{
   --bg:#FFFFFF; --soft:#F3F6F2; --soft2:#E9EFE8; --ink:#0B1410; --muted:#56665D; --line:#DFE7E0;
   --acc:#0A8F5B; --acc-d:#066B43; --hi:#C9F65F; --dark:#06110D; --dark-ink:#EAF5EE; --dark-muted:#9DB5A8; --flag:#B45309;
